@@ -1,2 +1,2 @@
-# Group2cs458
+# Group 2 CS 458
 Software Engineering Practicum
