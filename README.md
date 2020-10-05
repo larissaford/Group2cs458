@@ -16,9 +16,11 @@ inside your terminal:
 
 3. type "python3 -m venv local_python_environment" or "python -m venv local_python_environment" depending on how python is set up on your computer
 
-4. to activate your virtual environement, type "source local_python_environment/bin/activate" for linux
+4. to activate your virtual environement, 
 
-	- or "source local_python_environment/Scripts/activate"
+	- type "source local_python_environment/bin/activate" for linux
+
+	- or "source local_python_environment/Scripts/activate" for windows
 	
 5. to get the project dependencies, type: "pip install -r requirements.txt" inside the virtual environment
 (this downloads Django for the user)
