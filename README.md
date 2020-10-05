@@ -1,7 +1,7 @@
 # Group 2 CS 458
 Software Engineering Practicum
 
-steps for setting up your project:
+## Steps for setting up your project:
 
 step 0:
 
