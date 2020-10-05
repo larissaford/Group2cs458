@@ -2,6 +2,7 @@
 Software Engineering Practicum
 
 steps for setting up your project:
+
 step 0:
 	- make sure you have pip, virtualenv, and pipenv installed.
 	- go to the folder you want the repository in through your terminal
