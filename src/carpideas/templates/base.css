@@ -1,0 +1,23 @@
+.background {
+    margin: 0;
+    padding: 0;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: transparent;
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+    transition: transform .3s ease-out;
+    opacity: 0;
+    transition: transform var(--a-show-full-duration) var(--a-show-full-curve);
+}
+.fadein {
+    animation: fadein .3s ease-out 0s forwards;
+}
+
+element.style {
+    background-image: url(https://farm3.staticflickr.com/2891/33833709921_bec1f88a9b_k.jpg);
+}
