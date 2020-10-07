@@ -23,4 +23,6 @@ urlpatterns = [
 
     # Account Paths
     path('register/', register_view),
+    path(r'activate/(?P<uid64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$',
+         activate_view),
 ]
