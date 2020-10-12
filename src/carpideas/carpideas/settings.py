@@ -39,8 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     # Our Custom Apps
-    "accounts",
-    "Image",
+    'accounts',
+    'Image',
 ]
 
 MIDDLEWARE = [
