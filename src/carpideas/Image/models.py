@@ -2,7 +2,6 @@ from django.db import models
 
 # Create your models here.
 class Image(models.Model):
-    imageID = models.CharField(max_length=16, primary_key= True)
-    url = models.URLField()
+    url = models.URLField(primary_key = True)
     width = models.IntegerField()
     height = models.IntegerField()
