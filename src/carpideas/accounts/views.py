@@ -3,12 +3,14 @@ from django.shortcuts import render, redirect
 
 from .forms import RegisterForm
 from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.models import User
 
 # For Activation Link
 from django.contrib.sites.shortcuts import get_current_site
 from django.utils.encoding import force_bytes, force_text
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from .tokens import account_activation_token
+from django.contrib.auth import login
 
 # For Sending Emails
 from django.core.mail import EmailMessage
@@ -22,6 +24,7 @@ from django.contrib import messages
 
 # TODO: send confirmation email
 # TODO: display success message on login page
+# TODO: Possibly encapsulate email process for resending activation email
 def register_view(request):
     register_form = RegisterForm()
 
@@ -38,7 +41,7 @@ def register_view(request):
             emailContext = {
                 'name': username,
                 'domain': current_site.domain,
-                'uid': urlsafe_base64_encode(force_bytes(user.pk)).decode(),
+                'uid': urlsafe_base64_encode(force_bytes(user.pk)),
                 'token': account_activation_token.make_token(user)
             }
 
@@ -47,13 +50,13 @@ def register_view(request):
                 'Thank You For Registering!',
                 emailMessage,
                 settings.EMAIL_HOST_USER,
-                [to_email] # sub-in with user's email that was provided
+                [to_email]
                 )
             email.fail_silently = False
             email.send()
 
             # TODO: will have to add code in login page as done at 21:27 in video
-            messages.success(request, f"Account was created for {username}")
+            messages.success(request, f"Account was created for {username}. Please check your email for an activation link")
 
             # create a page informing user to verify email
             #return redirect("login") # redirect to login page
@@ -63,8 +66,7 @@ def register_view(request):
     }
     return render(request, 'accounts/register.html', context)
 
-# TODO: create "activation link not valid" and "thank you for activating" html page
-# TODO: Consider this -> http://django-easy-tutorial.blogspot.com/2017/04/django-send-one-time-use-activation-email.html?m=1
+# TODO: create "activation link not valid" and redirect to main dashboard page
 # Triggered when user registers and clicks on the link sent in email
 def activate_view(request, uidb64, token):
     try:
@@ -72,11 +74,10 @@ def activate_view(request, uidb64, token):
         user = User.objects.get(pk=uid)
     except(TypeError, ValueError, OverflowError, User.DoesNotExist):
         user = None
-    if user is not None and account_activation_token.check(user, token):
+    if user is not None and account_activation_token.check_token(user, token):
         user.is_active = True
         user.save()
         login(request, user)
-        # replace with redirecting to thank you for activating
         # return redirect('home')
         return HttpResponse('Thank you for your email confirmation. '
                             'Now you can log into your account')
