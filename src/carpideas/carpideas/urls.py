@@ -16,13 +16,16 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
-from accounts.views import register_view, activate_view
+
+from accounts.views import activate_view, register_view, login_view, logout_view
 
 urlpatterns = [
     path('admin/', admin.site.urls),
 
     # Account Paths
-    path('register/', register_view),
     path(r'^activate/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$',
          activate_view, name='activate'),
+    path('register/', register_view, name="register"),
+    path('login/', login_view, name="login"),
+    path('logout/', logout_view, name="logout"),
 ]

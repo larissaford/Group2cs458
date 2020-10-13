@@ -2,8 +2,10 @@ from django.http import HttpResponse # nice for testing
 from django.shortcuts import render, redirect
 
 from .forms import RegisterForm
-from django.contrib.auth.forms import UserCreationForm
+
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.models import User
+from django.contrib.auth import authenticate, login, logout
 
 # For Activation Link
 from django.contrib.sites.shortcuts import get_current_site
@@ -66,6 +68,7 @@ def register_view(request):
     }
     return render(request, 'accounts/register.html', context)
 
+
 # TODO: create "activation link not valid" and redirect to main dashboard page
 # Triggered when user registers and clicks on the link sent in email
 def activate_view(request, uidb64, token):
@@ -84,3 +87,29 @@ def activate_view(request, uidb64, token):
     else:
         # replace with actual page
         return HttpResponse('Activation link is invalid')
+
+def logout_view(request):
+    logout(request)
+    messages.info(request, "Logged out successfully!")
+    return redirect('login')
+
+def login_view(request):
+    if request.method == "POST":
+        form = AuthenticationForm(request, data=request.POST)
+        if form.is_valid():
+            username = form.cleaned_data.get('username')
+            password = form.cleaned_data.get('password')
+            user = authenticate(username=username, password=password)
+            if user is not None:
+                login(request, user)
+                messages.info(request, f"You are now logged in as {username}")
+                return redirect('register')
+            else:
+                messages.error(request, "Invalid username or password")
+        else:
+            messages.error(request, "Invalid username or password")
+    form = AuthenticationForm()
+    return render(request, 
+                    'accounts/login.html',
+                    {'form':form})
+

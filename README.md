@@ -25,11 +25,9 @@ inside your terminal:
 5. to get the project dependencies, type: "pip install -r requirements.txt" inside the virtual environment
 (this downloads Django for the user)
 
-5. go into the src file: "cd src"
+5. go into the src file: "cd src/carpideas"(our source file)
 
-6. go into the carpideas folder (the source folder of our project)
-
-7. to run our server, type: "python manage.py runserver"
+6. to run our server, type: "python manage.py runserver"
 	
 	- this can take a minute
 	- to quit the server on windows, type CTRL-C
