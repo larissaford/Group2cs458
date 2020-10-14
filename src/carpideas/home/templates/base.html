@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    {% load static %}
+    <link media="screen" rel="stylesheet" type="text/css" href={% static './base.css' %}>
+    <title>CarpIdea</title>
+</head>
+<body>
+    <h1>CarpIdea Base Page</h1>
+
+    
+    <div id="background" 
+        class="background fadein"
+        style="background_image: url('https://farm3.staticflickr.com/2891/33833709921_bec1f88a9b_k.jpg');">
+
+    {% block content%}
+        
+    {% endblock %}
+
+    </div>
+    
+</body>
+</html>
