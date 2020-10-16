@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     "accounts",
     'Image',
     'Contains',
+    'home'
 ]
 
 MIDDLEWARE = [
