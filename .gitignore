@@ -1,2 +1,4 @@
 local_python_environment
 .env
+.idea
+__pycache__
