@@ -1,3 +1,9 @@
+html{
+    background: url('https://farm3.staticflickr.com/2891/33833709921_bec1f88a9b_k.jpg') no-repeat center fixed;
+    background-size: cover;
+}
 h1{
     color: blue;
+    text-align: center;
 }
+
