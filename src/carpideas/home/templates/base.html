@@ -5,21 +5,26 @@
     <meta charset="UTF-8">
 
     <link rel="stylesheet" type="text/css" href="{% static 'css/base.css' %}">
-    <title>CarpIdea</title>
+    <title>CarpIdeas</title>
     <style type="text/css">
-    body{
-        <div class = "image">
-        background-image: url("https://farm3.staticflickr.com/2891/33833709921_bec1f88a9b_k.jpg");
-        </div>
-    }
     </style>
 </head>
-<body>
-    <h1>CarpIdea Base Page</h1>
+<body id="image" style="background-image: url('{% static 'https://source.unsplash.com/random/1920x1080'%}')";>
+    
+    <h1>CarpIdeas Base Page</h1>
 
     
     {% block content%}
-        
+    <!-- In order to run the code,  
+            the location of the image file needs to  
+            be changed to your local directory, 
+            both the HTML and downloadable file  
+            needs to be present in the same directory -->
+        <div class="container">
+            <div class = "downloadButton">
+            <a href="https://source.unsplash.com/random/1920x1080" download = "myimage"><button name = "download">Download</button></a>
+        </div>
+    </div>
     {% endblock %}
 </body>
 </html>
