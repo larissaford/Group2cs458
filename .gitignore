@@ -1,3 +1,4 @@
 local_python_environment
 .env
 __pycache__
+.vscode
