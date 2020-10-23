@@ -125,7 +125,6 @@ pyvenv.cfg
 /site
 
 # mypy
-.mypy_cache/
 .dmypy.json
 dmypy.json
 
@@ -141,3 +140,4 @@ cython_debug/
 local_python_environment/
 
 .vscode
+pyvenv.cfg

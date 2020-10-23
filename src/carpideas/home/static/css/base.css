@@ -1,3 +1,26 @@
+html{
+    background: url('https://source.unsplash.com/random/1920x1080') no-repeat center fixed;
+    background-size: cover;
+}
 h1{
     color: blue;
+    text-align: center;
+}
+
+#image{
+    width: 100%;
+    height: auto;
+}
+.container{
+    height: 200px;
+    position: relative;
+    border: 3px solid green;
+}
+.downloadButton{
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
 }
