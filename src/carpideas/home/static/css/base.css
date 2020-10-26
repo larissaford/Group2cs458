@@ -35,7 +35,7 @@ h1{
     transition: .5s ease;
     bottom: 0px; 
 }
-.dislike{
+#dislike{
     margin-left: 25%;
     position:absolute;
     transition: .5s ease;
