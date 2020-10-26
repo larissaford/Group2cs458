@@ -4,9 +4,11 @@
             be changed to your local directory, 
             both the HTML and downloadable file  
             needs to be present in the same directory -->
-        <div class="container">
-            <div class = "downloadButton">
-            <a href="https://source.unsplash.com/random/1920x1080" download = "myimage"><button name = "download">Download</button></a>
+        <div id="like" class = "popup" onclick="myFunction()">Like
+            <span class ="popuptext" id = "myPopup">Image Liked!</span>
+        </div>
+        <div class="dislike">
+            <button name = "dislike">Dislike</button>
         </div>
     </div>
 {% endblock %}
