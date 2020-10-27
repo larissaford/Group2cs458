@@ -5,12 +5,6 @@ html{
 h1{
     color: blue;
 }
-.title{
-    margin-left: 50%;
-    position:absolute;
-    transition: .5s ease;
-    top: 0px;
-}
 
 #image{
     width: 100%;
