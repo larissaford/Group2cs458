@@ -11,37 +11,14 @@ h1{
     height: auto;
 }
 
-.container{
-    margin-left: 50%;
-    position:absolute;
-    transition: .5s ease;
-    bottom: 0px;
-}
-.skip{
-    margin-left: 75%;
-    position:absolute;
-    transition: .5s ease;
-    bottom: 0px; 
-}
-#like{
-    margin-left: 12.5%;
-    position:absolute;
-    transition: .5s ease;
-    bottom: 0px; 
-}
-#dislike{
-    margin-left: 25%;
-    position:absolute;
-    transition: .5s ease;
-    bottom: 0px; 
-}
+
 .popup {
-    position: relative;
+
     display: inline-block;
     cursor: pointer;
   }
   
-  /* The actual popup (appears on top) */
+
   .popup .popuptext {
     visibility: hidden;
     width: 160px;
@@ -59,7 +36,7 @@ h1{
   .popup .show {
     visibility: visible;
     -webkit-animation: fadeIn 1s;
-    animation: fadeIn 1s
+    animation: fadeIn 1s;
   }
   @-webkit-keyframes fadeIn {
     from {opacity: 0;}
@@ -69,4 +46,6 @@ h1{
     from {opacity: 0;}
     to {opacity:1 ;}
   }
+
+
 

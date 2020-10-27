@@ -1,0 +1,34 @@
+{% block content %}
+<nav class="navbar navbar-inverse fixed-bottom">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <button type="button" class="toggler" data-toggle="collapse" data-target="#myNavbar">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+      </div>
+      <div class="collapse navbar-collapse" id="myNavbar">
+        <ul class="nav navbar-nav">
+            <li>
+                <div id="like" class = "popup" onclick="likeButton()"><button class="btn btn-secondary">Like</button>
+                <span class ="popuptext" id = "liked">Image Liked!</span>
+                </div>
+            </li>
+            <li>        
+                <div id="dislike" class = "popup" onclick="dislikeButton()"><button class="btn btn-secondary">Dislike</button>
+                <span class ="popuptext" id = "disliked">Image Disliked! You won't see that image again.</span>
+                </div>
+            </li>
+            <li>
+                <div class = "downloadButton">
+                <a href="https://source.unsplash.com/random/1920x1080" download = "myimage"><button name = "download" class="btn btn-secondary">Download</button></a>
+                </div>
+            </li>
+            <li>
+                <button name = "skip" class="btn btn-secondary" type="submit"  onClick="refreshPage()">Skip Background</button>
+            </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+{%endblock%} 
