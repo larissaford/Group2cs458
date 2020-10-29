@@ -7,6 +7,17 @@
 
 		<button class="btn" style="background-color:yellow; color:blue" type="submit">login</button>
 	</form>
-
+	<div>
 	If you don't already have an account, <a href="/register"><strong>register</strong></a> for one.
+	</div>
+	<div>
+	Forgot your password? We can help <a href="/password_reset"><strong>here.</strong></a>
+	</div>
+	{% if messages %}
+	<div id="message" class="{{ message.tags }}">
+		{% for message in messages%}
+		{{ message }}
+		{% endfor %}
+	</div>
+	{% endif %}
 {% endblock %}

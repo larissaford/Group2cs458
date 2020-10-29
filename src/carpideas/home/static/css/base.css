@@ -1,11 +1,3 @@
-html{
-    background: url('https://source.unsplash.com/random/1920x1080') no-repeat center fixed;
-    background-size: cover;
-}
-h1{
-    color: blue;
-    text-align: center;
-}
 
 #image{
     width: 100%;

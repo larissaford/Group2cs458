@@ -15,18 +15,34 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from accounts.tokens import account_activation_token
 
-
-from accounts.views import activate_view, register_view, login_view, logout_view
+from django.contrib.auth import views as auth_views
+from accounts.views import activate_view, login_view, logout_view, password_reset_view, register_view
 from home.views import home_view, pixelate_image
 
 urlpatterns = [
     path('admin/', admin.site.urls),
 
-    # Account Paths
-    path(r'^activate/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$',
-         activate_view, name='activate'),
+    # Registering Paths
     path('register/', register_view, name="register"),
+    # path(r'^activate/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$',
+    path('activate/<uidb64>/<token>', activate_view, name='activate'),
+
+    # Password Reset Paths
+    path('password_reset/', password_reset_view, name="reset_password"),
+    path('password_reset/done',
+         auth_views.PasswordResetDoneView.as_view(template_name="accounts/password_reset_done.html"),
+         name="reset_password_done"),
+    path('reset/<uidb64>/<token>',
+         auth_views.PasswordResetConfirmView.as_view(template_name="accounts/password_reset_confirm.html",
+                                                     token_generator=account_activation_token),
+         name='password_reset_confirm'),
+    path('reset/done',
+         auth_views.PasswordResetCompleteView.as_view(template_name="accounts/password_reset_complete.html"),
+         name='password_reset_complete'),
+
+
     path('login/', login_view, name="login"),
     path('logout/', logout_view, name="logout"),
     path('home/', home_view, name='home'),
