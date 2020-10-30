@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.contrib.auth.models import User
 from PIL import Image
@@ -27,8 +27,11 @@ def home_view(request):
         'image': image,
         'data': pixelatedImage
     }
-    
-    return render(request, "home.html", my_context)
+    # Check if user is anonymous user
+    if not request.user.is_authenticated:
+        return redirect("login")
+    else:
+        return render(request, "home.html", my_context)
 
 
 def pixelate_image(url):
