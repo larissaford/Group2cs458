@@ -20,9 +20,9 @@ class ImageGetter:
     def fetchImage(self):
         URL = "https://unsplash.com/s/photos/" + self.searchTerm + "?orientation=landscape" 
         webpage = requests.get(URL)
-        imageURLs = re.findall(r'_2VWD4 _2zEKz" (.*?)">', webpage.text) 
-        randNum = random.randint(0,8) 
-        print("hi")
+        imageURLs = re.findall(r'_2zEKz" (.*?)">', webpage.text) 
+        randNum = random.randint(0,8)
+        print(imageURLs)
         if imageURLs:
             imageStr = imageURLs[randNum]
             imageURL = imageStr.split('srcSet="')[1].split('?ixlib=')[0]
@@ -33,7 +33,7 @@ class ImageGetter:
 
 # uncomment the code below to test
 
-#ig = ImageGetter("fish")
-#url = ig.fetchImage()
-#print(url)
-#print("done")
+ig = ImageGetter("fish")
+url = ig.fetchImage()
+print(url)
+print("done")
