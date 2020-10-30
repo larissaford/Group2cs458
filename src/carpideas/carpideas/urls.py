@@ -18,7 +18,7 @@ from django.urls import path
 
 
 from accounts.views import activate_view, register_view, login_view, logout_view
-from home.views import home_view
+from home.views import home_view, pixelate_image
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -30,5 +30,6 @@ urlpatterns = [
     path('login/', login_view, name="login"),
     path('logout/', logout_view, name="logout"),
     path('home/', home_view, name='home'),
-    path('', home_view, name="home")
+    path('', home_view, name="home"),
+    path('pixelate/', pixelate_image, name='home')
 ]
