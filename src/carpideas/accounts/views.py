@@ -28,7 +28,6 @@ from django.contrib import messages
 # from django.contrib.messages import constants as messages
 
 # Create your views here.
-
 # TODO: display success message on login page
 # TODO: Possibly encapsulate email process for resending activation email
 def register_view(request):
@@ -49,7 +48,6 @@ def register_view(request):
                 'uid': urlsafe_base64_encode(force_bytes(user.pk)),
                 'token': account_activation_token.make_token(user)
             }
-
             email_message = render_to_string('accounts/emails/email_template.html', email_context)
             email = EmailMessage(
                 'Thank You For Registering!',
@@ -85,9 +83,8 @@ def activate_view(request, uidb64, token):
         user.is_active = True
         user.save()
         login(request, user)
-        return redirect('home')
         # messages.success(request, "Your account is now active!")
-        # return redirect('login')
+        return redirect('home')
     else:
         # replace with actual page
         messages.error(request, 'Link is no longer valid')
@@ -114,7 +111,12 @@ def login_view(request):
                     # messages.info(request, f"You are now logged in as {username}")
                     return redirect('home')
                 else:
-                    messages.error(request, "Invalid username or password")
+                    print("Made it")
+                    if not user.is_active:
+                        messages.error(request, "Your account doesn't seem to be active. "
+                                                "Check your email for an activation link or request another.")
+                    else:
+                        messages.error(request, "Invalid username or password")
             else:
                 messages.error(request, "Invalid username or password")
         form = AuthenticationForm()
@@ -126,7 +128,7 @@ def login_view(request):
         return redirect("home")
 
 
-# TODO: Create and add a template for requesting a password reset
+# TODO: Maybe add try except for resending activation link?
 def password_reset_view(request):
     if request.method == "POST":
         password_reset_form = PasswordResetForm(request.POST)
@@ -134,39 +136,65 @@ def password_reset_view(request):
             current_site = get_current_site(request)
             data = password_reset_form.cleaned_data['email']
             associated_users = CustomUser.objects.filter(Q(email=data))
-            # associated_users = User.objects.get(Q(email=data))
             if associated_users.exists():
                 for user in associated_users:
-                    user_email_address = user.email
-                    subject = "Password Reset Requested"
-                    email_template_name = "accounts/emails/password_reset_email.html"
-                    uid = urlsafe_base64_encode(force_bytes(user.pk))
-                    email_context = {
-                        "email": user_email_address,
-                        "domain": current_site.domain,
-                        "site_name": current_site.name,
-                        "uid": urlsafe_base64_encode(force_bytes(user.pk)),
-                        "user": user,
-                        "token": account_activation_token.make_token(user),
-                        "protocol": 'http'
-                    }
-                    print(uid)
-                    email_message = render_to_string(email_template_name, email_context)
-                    try:
-                        email = EmailMessage(
-                            subject,
-                            email_message,
-                            settings.EMAIL_HOST_USER,
-                            [user_email_address]
-                        )
-                        email.fail_silently = False
-                        email.send()
-                    except BadHeaderError:
-                        return HttpResponse('Invalid header found.')
-                    return redirect("/password_reset/done")
+                    if not user.is_active:
+                        resend_activation(current_site, user)
+                        messages.success(request,
+                                         f"Activation link resent for {username}. "
+                                         f"Please check your email for an activation link")
+                        return redirect('login')
+                    else:
+                        user_email_address = user.email
+                        subject = "Password Reset Requested"
+                        email_template_name = "accounts/emails/password_reset_email.html"
+                        uid = urlsafe_base64_encode(force_bytes(user.pk))
+                        email_context = {
+                            "email": user_email_address,
+                            "domain": current_site.domain,
+                            "site_name": current_site.name,
+                            "uid": urlsafe_base64_encode(force_bytes(user.pk)),
+                            "user": user,
+                            "token": account_activation_token.make_token(user),
+                            "protocol": 'http'
+                        }
+                        email_message = render_to_string(email_template_name, email_context)
+                        try:
+                            email = EmailMessage(
+                                subject,
+                                email_message,
+                                settings.EMAIL_HOST_USER,
+                                [user_email_address]
+                            )
+                            email.fail_silently = False
+                            email.send()
+                        except BadHeaderError:
+                            return HttpResponse('Invalid header found.')
+                        return redirect("/password_reset/done")
     password_reset_form = PasswordResetForm()
     context = {
         "form": password_reset_form
     }
-
     return render(request, 'accounts/password_reset.html', context)
+
+
+# Sends users an activation email when they are not active
+def resend_activation(current_site, user):
+    username = user.username
+    to_email = user.email
+    email_context = {
+        'name': username,
+        'domain': current_site.domain,
+        'uid': urlsafe_base64_encode(force_bytes(user.pk)),
+        'token': account_activation_token.make_token(user)
+    }
+    email_message = render_to_string('accounts/emails/email_template.html', email_context)
+    email = EmailMessage(
+        'Thank You For Registering!',
+        email_message,
+        settings.EMAIL_HOST_USER,
+        [to_email]
+    )
+    email.fail_silently = False
+    email.send()
+

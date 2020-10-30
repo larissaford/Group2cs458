@@ -43,9 +43,11 @@ urlpatterns = [
          name='password_reset_complete'),
 
 
+    # path('login/', auth_views.LoginView.as_view(template_name="accounts/login.html", next="home"), name="login"),
     path('login/', login_view, name="login"),
     path('logout/', logout_view, name="logout"),
-    path('home/', home_view, name='home'),
     path('', home_view, name="home"),
-    path('pixelate/', pixelate_image, name='home')
+    path('home/', home_view, name='home'),
+    # This needs to be renamed
+    # path('pixelate/', pixelate_image, name='home')
 ]
