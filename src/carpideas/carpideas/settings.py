@@ -51,7 +51,8 @@ INSTALLED_APPS = [
     # Our Custom Apps
     "accounts",
     'Image',
-    'home'
+    'home',
+    'templates',
 ]
 
 MIDDLEWARE = [
