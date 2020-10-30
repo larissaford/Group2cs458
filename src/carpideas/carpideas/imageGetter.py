@@ -22,9 +22,13 @@ class ImageGetter:
         webpage = requests.get(URL)
         imageURLs = re.findall(r'_2VWD4 _2zEKz" (.*?)">', webpage.text) 
         randNum = random.randint(0,8) 
-        imageStr = imageURLs[randNum]
-        imageURL = imageStr.split('srcSet="')[1].split('?ixlib=')[0]
-        return imageURL
+        print("hi")
+        if imageURLs:
+            imageStr = imageURLs[randNum]
+            imageURL = imageStr.split('srcSet="')[1].split('?ixlib=')[0]
+            return imageURL
+        else: 
+            return 'https://source.unsplash.com/random/1920x1080'
 
 
 # uncomment the code below to test
