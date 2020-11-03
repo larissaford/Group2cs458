@@ -5,7 +5,6 @@ from .forms import RegisterForm
 
 from django.contrib.auth.forms import AuthenticationForm, PasswordResetForm
 from .models import CustomUser
-# from django.contrib.auth.models import User
 from django.db.models.query_utils import Q
 from django.contrib.auth import authenticate, login, logout
 
@@ -14,7 +13,7 @@ from django.contrib.sites.shortcuts import get_current_site
 from django.utils.encoding import force_bytes, force_text
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from .tokens import account_activation_token
-from django.contrib.auth.views import LoginView
+
 
 # For Sending Emails
 from django.core.mail import EmailMessage
