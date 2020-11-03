@@ -17,7 +17,7 @@ class ImageGetter:
 
 # uncomment the code below to test
 
-#ig = ImageGetter("fish")
-#url = ig.fetchImage()
-#print(url)
-#print("done")
+# ig = ImageGetter("fish")
+# url = ig.fetchImage()
+# print(url)
+# print("done")

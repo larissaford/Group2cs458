@@ -18,7 +18,7 @@ from django.urls import path
 from accounts.tokens import account_activation_token
 
 from django.contrib.auth import views as auth_views
-from accounts.views import activate_view, login_view, logout_view, password_reset_view, register_view
+from accounts.views import activate_view, password_reset_view, register_view
 from home.views import home_view, pixelate_image
 
 urlpatterns = [
@@ -26,8 +26,8 @@ urlpatterns = [
 
     # Registering Paths
     path('register/', register_view, name="register"),
-    # path(r'^activate/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$',
     path('activate/<uidb64>/<token>', activate_view, name='activate'),
+    path('activate_error', activate_view, name='activate_error'),
 
     # Password Reset Paths
     path('password_reset/', password_reset_view, name="reset_password"),
@@ -42,12 +42,10 @@ urlpatterns = [
          auth_views.PasswordResetCompleteView.as_view(template_name="accounts/password_reset_complete.html"),
          name='password_reset_complete'),
 
-
-    # path('login/', auth_views.LoginView.as_view(template_name="accounts/login.html", next="home"), name="login"),
-    path('login/', login_view, name="login"),
-    path('logout/', logout_view, name="logout"),
+    # Logging In/Out Paths
+    path('login/', auth_views.LoginView.as_view(template_name="accounts/login.html",
+                                                redirect_authenticated_user=True), name="login"),
+    path('logout/', auth_views.LogoutView.as_view(template_name="accounts/login.html"), name="logout"),
     path('', home_view, name="home"),
     path('home/', home_view, name='home'),
-    # This needs to be renamed
-    # path('pixelate/', pixelate_image, name='home')
 ]

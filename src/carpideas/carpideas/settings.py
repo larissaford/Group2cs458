@@ -139,6 +139,10 @@ STATIC_URL = '/static/'
 # Custom User Model
 AUTH_USER_MODEL = 'accounts.CustomUser'
 
+# Default Redirects
+LOGIN_REDIRECT_URL = 'home'
+LOGOUT_REDIRECT_URL = 'login'
+
 # SMTP Configuration
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'

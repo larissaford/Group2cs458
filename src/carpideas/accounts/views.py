@@ -14,7 +14,7 @@ from django.contrib.sites.shortcuts import get_current_site
 from django.utils.encoding import force_bytes, force_text
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from .tokens import account_activation_token
-from django.contrib.auth import login
+from django.contrib.auth.views import LoginView
 
 # For Sending Emails
 from django.core.mail import EmailMessage
@@ -25,11 +25,10 @@ from django.template.loader import render_to_string
 from django.contrib import messages
 
 
-# from django.contrib.messages import constants as messages
-
 # Create your views here.
-# TODO: display success message on login page
-# TODO: Possibly encapsulate email process for resending activation email
+
+# Handles the Registration Process for New Users
+# Sends activation link via email upon successful registration
 def register_view(request):
     register_form = RegisterForm()
     if request.method == "POST":  # check method
@@ -58,12 +57,10 @@ def register_view(request):
             email.fail_silently = False
             email.send()
 
-            # TODO: will have to add code in login page as done at 21:27 in video
             messages.success(request,
                              f"Account was created for {username}. Please check your email for an activation link")
 
-            # create a page informing user to verify email
-            return redirect("login")  # redirect to login page
+            return redirect("login")
 
     context = {
         "form": register_form
@@ -71,7 +68,6 @@ def register_view(request):
     return render(request, 'accounts/register.html', context)
 
 
-# TODO: create "activation link not valid" and redirect to main dashboard page
 # Triggered when user registers and clicks on the link sent in email
 def activate_view(request, uidb64, token):
     try:
@@ -82,53 +78,15 @@ def activate_view(request, uidb64, token):
     if user is not None and account_activation_token.check_token(user, token):
         user.is_active = True
         user.save()
-        login(request, user)
-        # messages.success(request, "Your account is now active!")
-        return redirect('home')
-    else:
-        # replace with actual page
-        messages.error(request, 'Link is no longer valid')
+        # login(request, user)
+        messages.success(request, "Your account is now active!")
+        # return redirect('home')
         return redirect('login')
-
-
-def logout_view(request):
-    logout(request)
-    messages.info(request, "Logged out successfully!")
-    return redirect('login')
-
-
-# Handles logging into service
-def login_view(request):
-    if not request.user.is_authenticated:
-        if request.method == "POST":
-            form = AuthenticationForm(request, data=request.POST)
-            if form.is_valid():
-                username = form.cleaned_data.get('username')
-                password = form.cleaned_data.get('password')
-                user = authenticate(username=username, password=password)
-                if user is not None:
-                    login(request, user)
-                    # messages.info(request, f"You are now logged in as {username}")
-                    return redirect('home')
-                else:
-                    print("Made it")
-                    if not user.is_active:
-                        messages.error(request, "Your account doesn't seem to be active. "
-                                                "Check your email for an activation link or request another.")
-                    else:
-                        messages.error(request, "Invalid username or password")
-            else:
-                messages.error(request, "Invalid username or password")
-        form = AuthenticationForm()
-        context = {
-            'form': form
-        }
-        return render(request, 'accounts/login.html', context)
     else:
-        return redirect("home")
+        return render(request, 'accounts/activate_fail.html')
 
 
-# TODO: Maybe add try except for resending activation link?
+# Handles sending password reset/activation emails for users that request it
 def password_reset_view(request):
     if request.method == "POST":
         password_reset_form = PasswordResetForm(request.POST)
@@ -141,7 +99,7 @@ def password_reset_view(request):
                     if not user.is_active:
                         resend_activation(current_site, user)
                         messages.success(request,
-                                         f"Activation link resent for {username}. "
+                                         f"Activation link resent for {user.username}. "
                                          f"Please check your email for an activation link")
                         return redirect('login')
                     else:
@@ -178,7 +136,7 @@ def password_reset_view(request):
     return render(request, 'accounts/password_reset.html', context)
 
 
-# Sends users an activation email when they are not active
+# Sends users an activation email when they are not active during password reset
 def resend_activation(current_site, user):
     username = user.username
     to_email = user.email
