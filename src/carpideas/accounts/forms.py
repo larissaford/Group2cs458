@@ -8,7 +8,6 @@ from accounts.models import CustomUser
 class RegisterForm(UserCreationForm):
     class Meta:
         model = CustomUser
-        # model = User
         fields = [
             'username',
             'email',
