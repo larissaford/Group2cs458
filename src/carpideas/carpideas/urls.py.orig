@@ -47,5 +47,9 @@ urlpatterns = [
                                                 redirect_authenticated_user=True), name="login"),
     path('logout/', auth_views.LogoutView.as_view(template_name="accounts/login.html"), name="logout"),
     path('', home_view, name="home"),
+<<<<<<< HEAD
+    path('pixelate/', pixelate_image, name="pixelateImage"),
+=======
     path('home/', home_view, name='home'),
+>>>>>>> 07958624f37d7439176cc1798267a8632888ffb7
 ]

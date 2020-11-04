@@ -27,6 +27,9 @@
             <li>
                 <button name = "skip" class="btn btn-secondary" type="submit"  onClick="refreshPage()">Skip Background</button>
             </li>
+            <li>
+              <button name = "pixelate" value={{excel_path}} class="btn btn-secondary" type="submit" onclick="location.href='{% url 'pixelateImage' %}'">Pixelate</button>
+            </li>
         </ul>
       </div>
     </div>
