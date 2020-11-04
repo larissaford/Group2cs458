@@ -31,4 +31,5 @@ urlpatterns = [
     path('logout/', logout_view, name="logout"),
     path('home/', home_view, name='home'),
     path('', home_view, name="home"),
+    path('pixelate/', pixelate_image, name="pixelateImage"),
 ]
