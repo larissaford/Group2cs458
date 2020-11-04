@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.contrib.auth.models import User
-from .models import Quotes
+from .models import Quote
 import random
 
 from PIL import Image
@@ -22,9 +22,10 @@ from carpideas.imageGetter import ImageGetter
 
 def home_view(request):
 	#return HttpResponse("<h1>Hello World</h1>")
-	randNum = random.randint(0,16) 
+	randNum = 0 # For testing purposes
+	# randNum = random.randint(0,16)
 	#user = User.objects.get(id=1)
-	posts = Quotes.objects.get(quotesID=randNum)
+	posts = Quote.objects.get(quoteID=randNum)
 	 
 	image = ImageGetter("fish").fetchImage()
 	pixelatedImage = pixelate_image(image)
