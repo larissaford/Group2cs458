@@ -36,7 +36,7 @@ DEBUG = True
 ALLOWED_HOSTS = []
 
 STATICFILES_DIRS = [
-    "C:\Git\Group2cs458\src\carpideas\home\static",
+    BASE_DIR / 'home\static'
 ]
 # Application definition
 
@@ -51,7 +51,8 @@ INSTALLED_APPS = [
     # Our Custom Apps
     "accounts",
     'Image',
-    'home'
+    'home',
+    'templates',
 ]
 
 MIDDLEWARE = [

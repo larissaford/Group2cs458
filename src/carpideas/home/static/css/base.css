@@ -1,18 +1,136 @@
 html{
-    background: url('https://source.unsplash.com/random/1920x1080') no-repeat center fixed;
+    background: no-repeat center fixed;
     background-size: cover;
 }
 h1{
     color: blue;
-    text-align: center;
 }
 
 #image{
     width: 100%;
     height: auto;
 }
-.container{
-    height: 200px;
+
+
+.popup {
+
+    display: inline-block;
+    cursor: pointer;
+  }
+  
+
+  .popup .popuptext {
+    visibility: hidden;
+    width: 160px;
+    background-color: #555;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 8px 0;
+    position: absolute;
+    z-index: 1;
+    bottom: 125%;
+    left: 50%;
+    margin-left: -80px;
+  }
+  .popup .show {
+    visibility: visible;
+    -webkit-animation: fadeIn 1s;
+    animation: fadeIn 1s;
+  }
+  @-webkit-keyframes fadeIn {
+    from {opacity: 0;}
+    to {opacity: 1;}
+  }
+  @keyframes fadeIn {
+    from {opacity: 0;}
+    to {opacity:1 ;}
+  }
+/* The switch - the box around the slider */
+.switch {
     position: relative;
-    border: 3px solid green;
-}
+    display: inline-block;
+    width: 60px;
+    height: 34px;
+  }
+  
+  /* Hide default HTML checkbox */
+  .switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+  
+  /* The slider */
+  .slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    -webkit-transition: .4s;
+    transition: .4s;
+  }
+  
+  .slider:before {
+    position: absolute;
+    content: "";
+    height: 26px;
+    width: 26px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    -webkit-transition: .4s;
+    transition: .4s;
+  }
+  
+  input:checked + .slider {
+    background-color: #2196F3;
+  }
+  
+  input:focus + .slider {
+    box-shadow: 0 0 1px #2196F3;
+  }
+  
+  input:checked + .slider:before {
+    -webkit-transform: translateX(26px);
+    -ms-transform: translateX(26px);
+    transform: translateX(26px);
+  }
+  
+  /* Rounded sliders */
+  .slider.round {
+    border-radius: 34px;
+  }
+  
+  .slider.round:before {
+    border-radius: 50%;
+  }
+  .container{
+      top: 0px;
+      right: 0;
+  }
+
+
+
+
+  body {
+    background-color: transparent;
+  }
+  #digital-clock {
+    width: 20%;
+    font-size: 10px;
+    text-align: center;
+    font-size: 5vw;
+    color: white;
+  }
+  .red-dot {
+    color: #2196F3;
+  }
+
+  .clock{
+    max-width:480px;
+    margin:3em auto;
+  }
