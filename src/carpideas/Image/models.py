@@ -1,5 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
+from accounts.models import CustomUser
+# from django.conf import settings
 
 # Create your models here.
 #class Image(models.Model):
@@ -32,4 +34,4 @@ class ImageURL(models.Model):
 	#this will keep track of all the images that the user does not wish to seen again
 	ImageDisliked = models.boole()
 	#this is the foreignkey that links Image url to that of SearchQuery
-	SearchQuery = models.ForeignKey(SearchQuery, related_name='ImageURL', on_delete=models.CASCADE)
+	SearchQuery = models.ForeignKey(SearchQuery, related_name='ImageURL', on_delete=models.CASCADE

@@ -1,12 +1,33 @@
 {% extends 'base.html' %}
 
 {% block content %}
-	<form method="POST">
+	<form method="POST" action="{% url 'login' %}">
 		{% csrf_token %}
-		{{form.as_p}}
 
-		<button class="btn" style="background-color:yellow; color:blue" type="submit">login</button>
+		{% for field in form %}
+        <div>
+            {{ field.label }}
+            {{ field }}
+        </div>
+    	{% endfor %}
+		{% if form.errors %}
+		<div>
+			<p>Your username and/or password was incorrect.</p>
+		</div>
+		{% endif %}
+		<input type="submit" value="Login"/>
 	</form>
-
-	If you don't already have an account, <a href="/register"><strong>register</strong></a> for one.
+	<div>
+		If you don't already have an account, <a href="{% url 'register' %}"><strong>register</strong></a> for one.
+	</div>
+	<div>
+		Need help getting into your account? We can help <a href="{% url 'reset_password' %}"><strong>here.</strong></a>
+	</div>
+	{% if messages %}
+		{% for message in messages %}
+			<div>
+				<p>{{ message }}</p>
+			</div>
+		{% endfor %}
+	{% endif %}
 {% endblock %}

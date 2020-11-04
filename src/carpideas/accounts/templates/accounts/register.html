@@ -9,10 +9,12 @@
         <div>
             {{ field.label }}
             {{ field }}
+            <div>
+                {{ field.errors }}
+            </div>
         </div>
     {% endfor %}
 
     <input type="submit" value="Register Account"/>
-    {{ form.errors }}
 </form>
 {% endblock %}

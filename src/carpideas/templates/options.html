@@ -1,0 +1,37 @@
+{% block content %}
+<nav class="navbar navbar-inverse fixed-bottom">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <a class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+            <span class="navbar-toggle-icon"></span>
+            <img src="https://p7.hiclipart.com/preview/269/480/867/gear-logo-desktop-wallpaper-clip-art-gears.jpg" width="30" height="30" class="d-inline-block align-top" alt="">
+        </a>
+      </div>
+      <div class="collapse navbar-collapse" id="myNavbar">
+        <ul class="nav navbar-nav">
+            <li>
+                <div id="like" class = "popup" onclick="likeButton()"><button class="btn btn-secondary">Like</button>
+                <span class ="popuptext" id = "liked">Image Liked!</span>
+                </div>
+            </li>
+            <li>        
+                <div id="dislike" class = "popup" onclick="dislikeButton()"><button class="btn btn-secondary">Dislike</button>
+                <span class ="popuptext" id = "disliked">Image Disliked! You won't see that image again.</span>
+                </div>
+            </li>
+            <li>
+                <div class = "downloadButton">
+                <a href="https://source.unsplash.com/random/1920x1080" download = "myimage"><button name = "download" class="btn btn-secondary">Download</button></a>
+                </div>
+            </li>
+            <li>
+                <button name = "skip" class="btn btn-secondary" type="submit"  onClick="refreshPage()">Skip Background</button>
+            </li>
+            <li>
+              <button name = "pixelate" value={{excel_path}} class="btn btn-secondary" type="submit" onclick="location.href='{% url 'pixelateImage' %}'">Pixelate</button>
+            </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+{%endblock%} 

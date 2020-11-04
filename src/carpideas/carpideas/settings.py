@@ -51,7 +51,8 @@ INSTALLED_APPS = [
     # Our Custom Apps
     "accounts",
     'Image',
-    'home'
+    'home',
+    'templates',
 ]
 
 MIDDLEWARE = [
@@ -136,6 +137,12 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+# Custom User Model
+AUTH_USER_MODEL = 'accounts.CustomUser'
+
+# Default Redirects
+LOGIN_REDIRECT_URL = 'home'
+LOGOUT_REDIRECT_URL = 'login'
 
 # SMTP Configuration
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
