@@ -16,6 +16,9 @@ def home_view(request):
     #return HttpResponse("<h1>Hello World</h1>")
 
     image = ImageGetter("fish").fetchImage()
+
+
+    
     pixelatedImage = pixelate_image(image)
     
 
