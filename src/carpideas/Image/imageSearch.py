@@ -89,6 +89,3 @@ def class ImageSearch:
 		return (list(list(set(list_new)-set(list_old)) + list(set(list_new)-set(list_new))))
 
 
-ig = ImageSearch()
-
-ig.past_search(ig.search)

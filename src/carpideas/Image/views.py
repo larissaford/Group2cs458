@@ -20,15 +20,17 @@ def user_input(request, pk):
 		# Asking Django to verify the data
 		# Asking Django to verify the form
 		if form.is_valid():
-
-        imagesInPasSearch("POST")
 		
-		# in valiad input
+			ig = ImageSearch()
+
+			ig.past_search(ig.search)
+		
+		# not valiad input
 		else:
 			form = SearchForm()
 		#return the user back to an empty search bar
 		return render(request,"search.html",{'form':form})
 	# The below code block will create a new instance of the user's search 
 	# This is done after "search" is compared to previous "searches"
-	
+
 	
