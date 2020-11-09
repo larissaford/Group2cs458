@@ -34,4 +34,6 @@ class ImageURL(models.Model):
 	#this will keep track of all the images that the user does not wish to seen again
 	ImageDisliked = models.boole()
 	#this is the foreignkey that links Image url to that of SearchQuery
-	SearchQuery = models.ForeignKey(SearchQuery, related_name='ImageURL', on_delete=models.CASCADE
+	SearchQuery = models.ForeignKey(SearchQuery, related_name='ImageURL', on_delete=models.CASCADE)
+
+

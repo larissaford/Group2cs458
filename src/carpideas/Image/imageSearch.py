@@ -1,82 +1,94 @@
 from .forms import SearchForm
 from .models import SearchQuery, ImageURL
+from carideas import imageGetter.py
+from Image import queue.py
 # todo a function that loops over pervious search querys
 # todo a function that loops over all images that are associated with the search querry
-def new_user_search_entery():
-	
-	searchquery = form.save(commit = False)
-	searchquery.userSearchQuery= form.cleaned_data.get('search')
-	searchquery.lastSeached = datetime.now()
-	searchquery.User
+def class ImageSearch:
 
-def new_image_url(new_image_url, search):
-	image = ImageURL
-	image.url = new_image
-	image.searchQuery = search
+	def _init_(self,search, queue):
+		self.search = formmat.clean_data.get('search')
+		self.queue = ImageQueue()
+
+	def new_user_search_entery(search):
+		
+		searchquery = form.save(commit = False)
+		searchquery.userSearchQuery= form.cleaned_data.get('search')
+		searchquery.lastSeached = datetime.now()
+		searchquery.User
+		
+		new_image_url(imageGetter.fetchImage(search),search)
+		# there should only be one imgaeURL
+
+		queue.enqueue(ImageURL.objects.get(ImageSearch = search))
+
+		#mass_fill_new(imageGetter.fetchImageMass(search),search)
+
+	def new_image_url(new_image_url, search):
+		image = ImageURL
+		image.url = new_image
+		image.searchQuery = search
+		
 
 
-def perviousSearch(self, search):
-	#create a list of all past search users
-	pastSearch = SearchQuery.objects.all()
+	def get_one_new_image_url(search, past_image):
+		new_url = False
+		while new_url == false:
+				url = imageGetter(search)
+				new_url =compare_image(url, past_image)
+		new_image_url(url, search)
 
-	for x in pastSearch:
-		# checks if search equals a past search
-		if search == pastSearch.userSearchQuery
-			
-			imagesInPastSearch(search)
+		
+		
+	def mass_fill_new(new_image_url_list, search):
+		for each in new_image_url_list:
+			new_image_url(new_image_url, search)
+
+	def mass_fill_old(new_image_url_list,search, past_image_list):
+		unique_url = list()
+		compare_two_list(new_image_url_list,past_image_list)
+		for each in unique_url:
+			new_image_url(unique_url, search)
+
+	def past_search(self, search):
+
+
+		past_search =  SearchQuery.objects.filter(searchQuery = search)
+		
+		if past_search == null:
+			# this is a new search
+			new_user_search_entery(search)
+
 		else:
-			#creates a new userSearchQuery instance 
-			new_user_search_entery()
+			# call past_image retun a list of all past images that have the key value of search
+			past_image_list = past_image(search)
+			if past_image = null:
+				
 
 
+	# searches past image and sees if the user has any past search that have not been seen
+	def past_image(self,search)
 
-def imagesInPastSearch(self, search):
+		past_image_list =list()
+		# create a list of images from past search
+		past_image = ImageURL.objects.filter(SearchQuery = search)
+		past_image = ImageURL.objects.filter(imageSeeOn = NULL)	
+		past_search_list = list(past_image)
+		return past_image_list
+		
+	def compare_image(url,past_image_list):
+		url_unique = False
+		for each in past_image_list
+			if url == past_image_list.url():
+				return url_unique
+				
+		url_unique =True
+		return url_unique
 
-	#One check if there are any image url that have not be seen first
-	#Two creat a list of urls that have not been seen
-	#Three check if there is any images in the past seen images that where liked if so
-	#so then add them to the stat
-	#if the user has seen the liked image in the past few week then the user should added to the stack 
-	#if there is no not seen images then wee need to seen the query to the imagegetter 
-
-	images_in_past_search =  ImageURL.objects.filter(searchQuery = search)
-	
-	for x in images_in_past_search:
-		if images_in_past_search.imageSeenOn ==null:
-			q.enqueue(images_in_past_search.url)
-
-	while q.size < 3:
-		#call image web scraper 
-		#check if the image is is already stored in images_in_past_search
-		newImageURLIsU = False
-		while(newImageURLIsU ==False )
-			newImageURL = imagegetter()
-			for x in images_in_past_search:
-				if newImageURL == images_in_past_search.url
-					break
-				else:
-					newImageURLIsU= True
-					new_image_url(newImageURL)
-
-					break
+	def compare_two_list(list_old,list_new):
+		return (list(list(set(list_new)-set(list_old)) + list(set(list_new)-set(list_new))))
 
 
-class checkUserInput:
-	perviousSearch(search)
-class ImageQueue:
-    def __init__(self):
-        self.items = []
+ig = ImageSearch()
 
-    def isEmpty(self):
-        return self.items == []
-
-    def enqueue(self, item):
-        self.items.insert(0,item)
-
-    def dequeue(self):
-        return self.items.pop()
-
-    def size(self):
-        return len(self.items)
-	
-	q = ImageQueue
+ig.past_search(ig.search)
