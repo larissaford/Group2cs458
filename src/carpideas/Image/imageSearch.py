@@ -1,3 +1,5 @@
+#ImageSearch class - Tracen Vail
+#last upddat 11/10/20-00.19.00
 
 from models import SearchQuery, ImageURL
 from carpideas.imageGetter import ImageGetter

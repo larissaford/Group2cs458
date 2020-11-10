@@ -17,7 +17,7 @@ from accounts.models import CustomUser
 # Create your models here.
 class SearchQuery(models.Model):
 	#what the user is searching
-	userSearchQuery = models.charField(max_length=255,unique =True)
+	userSearchQuery = models.CharField(max_length=255,unique =True)
 	#when was the last time the user seached this topic
 	lastSearched  = models.DateTimeField(auto_now_add=True)
 	# this makes this seach unique to the user that is seaching this query
@@ -29,14 +29,14 @@ class SearchQuery(models.Model):
 
 class ImageURL(models.Model):
 	#url is the url path for the image in its database
-	url = models.charField(max_length=255, unique = True)
+	url = models.CharField(max_length=255, unique = True)
 	#when was the last time that the user saw this image
 	#when ImageSeenOn is Null then that will mean that the user has never seen the image befor
 	imageSeenOn= models.DateTimeField(auto_now_add= True)
 	#the user will be able to see these again with no time constrain
-	imageLiked = models.boole()
+	imageLiked = models.BooleanField()
 	#this will keep track of all the images that the user does not wish to seen again
-	imageDisliked = models.boole()
+	imageDisliked = models.BooleanField()
 	#this is the foreignkey that links Image url to that of SearchQuery
 	searchQuery = models.ForeignKey(SearchQuery, related_name='ImageURL', on_delete=models.CASCADE)
 
