@@ -29,7 +29,6 @@ class ImageGetter:
         else:
             return 'https://source.unsplash.com/random/1920x1080'
 
-    def fetchImageMass(self):
         
 
 # uncomment the code below to test

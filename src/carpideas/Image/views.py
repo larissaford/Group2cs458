@@ -2,8 +2,8 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from datetime import datetime
 from .models import SearchQuery
-Form .forms import SearchForm
-From imageSearch.py
+#form .forms import SearchForm // will add this later
+from imageSearch import imageSearch
 
 import request
 # Create your views here.
@@ -15,15 +15,15 @@ def user_input(request, pk):
 	if request.method =='POST'
 
 		# passes the "search query to the serve
-		form = SearchForm(request.POST)
+		#form = SearchForm(request.POST)
 
 		# Asking Django to verify the data
 		# Asking Django to verify the form
-		if form.is_valid():
+		#if form.is_valid():
 		
 			ig = ImageSearch()
 
-			ig.past_search(ig.search)
+			ig.past_search= form.clean_data.get('')
 		
 		# not valiad input
 		else:
