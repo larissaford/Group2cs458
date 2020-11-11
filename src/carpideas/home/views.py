@@ -2,8 +2,11 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.contrib.auth.models import User
 from .models import Quote
-import random
 
+import random
+import os
+import subprocess
+from subprocess import call
 from PIL import Image
 import urllib.request, base64
 import io
@@ -27,9 +30,19 @@ def home_view(request):
 	#user = User.objects.get(id=1)
 	posts = Quote.objects.get(quoteID=randNum)
 	 
-	image = ImageGetter("fish").fetchImage()
-	pixelatedImage = pixelate_image(image)
-	
+	image = ImageGetter("dog").fetchImage()
+	#pixelation through PyPXL
+	#"python pypxl_image.py -s 16 16 image.png pixelated.png"
+	wd = os.getcwd()
+	print(wd)
+	print()
+	os.chdir(wd + "\\home")
+	bashCommandForPixelation = "python pypxl_image.py -s 256 256 image.png pixelated.png" 
+	print(os.getcwd())
+	print()
+	process = subprocess.call(bashCommandForPixelation.split())
+	os.chdir(wd)
+
 
 	#user = User.objects.get(id=1)
 
@@ -37,7 +50,7 @@ def home_view(request):
 	my_context = {
 	#    'username' : user.username
 		'image': image,
-		'data': pixelatedImage,
+		'data': "pixelated.png",
 		'quote': posts.quote
 	}
 	# Check if user is anonymous user
@@ -45,7 +58,6 @@ def home_view(request):
 		return redirect("login")
 	else:
 		return render(request, "home.html", my_context)
-
 
 def pixelate_image(url):
 	
