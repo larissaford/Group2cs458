@@ -24,7 +24,7 @@ def home_view(request):
 	#return HttpResponse("<h1>Hello World</h1>")
 	randNum = random.randint(0,16) 
 	#user = User.objects.get(id=1)
-	posts = Quotes.objects.get(quotesID=randNum)
+	posts = Quotes.objects.get(quotesID=0)
 	 
 	image = ImageGetter("fish").fetchImage()
 	pixelatedImage = pixelate_image(image)
