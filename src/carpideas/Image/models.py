@@ -10,6 +10,7 @@ class Image(models.Model):
     url = models.URLField()
     width = models.IntegerField()
     height = models.IntegerField()
+    pixelated = models.ImageField(default=None, blank=True, null=True)
     users = models.ManyToManyField(CustomUser, related_name='liked_images')
     users = models.ManyToManyField(CustomUser, related_name='skipped_images')
 

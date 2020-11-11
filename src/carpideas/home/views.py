@@ -4,12 +4,14 @@ from django.contrib.auth.models import User
 from .models import Quote
 
 import random
+import cv2
+from skimage import io
 import os
+import requests
 import subprocess
 from subprocess import call
 from PIL import Image
 import urllib.request, base64
-import io
 import numpy as np
 import matplotlib.pyplot as plt
 from carpideas.imageGetter import ImageGetter
@@ -30,27 +32,17 @@ def home_view(request):
 	#user = User.objects.get(id=1)
 	posts = Quote.objects.get(quoteID=randNum)
 	 
-	image = ImageGetter("dog").fetchImage()
-	#pixelation through PyPXL
-	#"python pypxl_image.py -s 16 16 image.png pixelated.png"
-	wd = os.getcwd()
-	print(wd)
-	print()
-	os.chdir(wd + "\\home")
-	bashCommandForPixelation = "python pypxl_image.py -s 256 256 image.png pixelated.png" 
-	print(os.getcwd())
-	print()
-	process = subprocess.call(bashCommandForPixelation.split())
-	os.chdir(wd)
-
+	image_url = ImageGetter("cow").fetchImage()
+	print(image_url)
+	pixelatedImage = pixelate_image(image_url, "64")
 
 	#user = User.objects.get(id=1)
 
 	#contains a key-value pair
 	my_context = {
 	#    'username' : user.username
-		'image': image,
-		'data': "pixelated.png",
+		'image': image_url,
+		'data': pixelatedImage,
 		'quote': posts.quote
 	}
 	# Check if user is anonymous user
@@ -59,8 +51,17 @@ def home_view(request):
 	else:
 		return render(request, "home.html", my_context)
 
-def pixelate_image(url):
+
+def download_image(image_url):
 	
+	img_data = requests.get(image_url).content
+	with open('image.jpg', 'wb') as handler:
+		handler.write(img_data)
+
+
+def old_pixelate_image(url):
+	
+	"""
 	fd = urllib.request.urlopen(url)
 	image_file = io.BytesIO(fd.read())
 	image = Image.open(image_file).convert('LA')
@@ -83,3 +84,30 @@ def pixelate_image(url):
 	uri = urllib.parse.quote(string)
 	return uri
 
+ """
+
+def pixelate_image(image_url, bitsize):
+	 	
+	wd = os.getcwd()+"\\home\\"
+
+	image = io.imread(image_url)
+	status = cv2.imwrite(wd+"image.png", cv2.cvtColor(image, cv2.COLOR_BGR2RGB))
+	print()
+	print("Image written to file-system : ",status)
+	
+	#pixelation through PyPXL, needs a png file
+	#"python pypxl_image.py -s 16 16 image.png pixelated.png"
+	bashCommandForPixelation = "python "+wd+"pypxl_image.py -s "+bitsize+" "+bitsize+" "+wd+"image.png "+wd+"pixelated.png" 
+	print(bashCommandForPixelation)
+	print()
+	try:
+		process = subprocess.check_call(bashCommandForPixelation.split(),shell=True)
+	except subprocess.CalledProcessError:
+		print("Update the search term to something that hasn't been used before")
+		print()
+		return -1
+
+	encoded = base64.b64encode(open(wd+"pixelated.png", "rb").read())
+	uri = urllib.parse.quote(encoded)
+
+	return uri
