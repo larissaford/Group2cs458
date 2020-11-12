@@ -17,15 +17,6 @@ from carpideas.imageGetter import ImageGetter
 
 # Create your views here.
 
-<<<<<<< HEAD
-    image = ImageGetter("fish").fetchImage()
-
-
-    
-    pixelatedImage = pixelate_image(image)
-    
-=======
->>>>>>> 5bd511118768821597a30f6a122fa335d1640829
 
 
 
@@ -35,9 +26,9 @@ def home_view(request):
 	# randNum = random.randint(0,16)
 	#user = User.objects.get(id=1)
 	posts = Quote.objects.get(quoteID=randNum)
-	 
-	image = ImageGetter("fish").fetchImage()
-	pixelatedImage = pixelate_image(image)
+	image = 'https://source.unsplash.com/random/1920x1080'
+	#image = ImageGetter("cat").fetchImage()
+	pixelatedImage = image
 	
 
 	#user = User.objects.get(id=1)

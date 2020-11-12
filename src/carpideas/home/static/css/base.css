@@ -6,7 +6,11 @@ html{
 h1{
     color: blue;
 }
-
+h3{
+  text-align: center;
+  bottom: 125%;
+  left: 50%;
+}
 #image{
     width: 100%;
     height: auto;
@@ -145,9 +149,9 @@ h1{
     height: 200px;
     background-color:transparent;
     border-radius: 50%;
-    border: 8px solid #000;
+    border: 8px solid rgb(17, 17, 17);
     box-shadow: 2px 2px 8px 2px rgba(22, 45, 75, 0.92);
-    background-image: url('../img/face.png');
+    background-image: url('clock.png');
     background-size: cover;
     position: relative;
   }
@@ -156,10 +160,10 @@ h1{
     width: 15px;
     height: 15px;
     border-radius: 50%;
-    background-color: #000;
+    background-color: rgb(17, 17, 17);
     position: absolute;
     top: 50%;
-    left: 50%;
+    left: 51%;
     transform: translate(-50%, -50%);
     z-index: 999;
   }
@@ -176,9 +180,9 @@ h1{
     border-top-right-radius: 7px;
   }
   .hour {
-    width: 8px;
+    width: 7px;
     height: 28%;
-    background-color: #000;
+    background-color: rgb(17, 17, 17);
   }
   
   /* hour hand style ends */
@@ -187,7 +191,7 @@ h1{
   .minute {
     width: 5px;
     height: 38%;
-    background-color: #000;
+    background-color:rgb(17, 17, 17);
   }
   
   /* minute hand style ends */
@@ -195,7 +199,7 @@ h1{
   
   .second {
     width: 3px;
-    height: 40%;
+    height: 45%;
     background-color: #ff0000;
   }
   

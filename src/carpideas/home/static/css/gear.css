@@ -1,0 +1,6 @@
+.fa.fa-cog:hover {  
+    transform: rotate(180deg);
+}
+.fa.fa-cog {
+    transition: transform 0.5s ease 0s;
+}

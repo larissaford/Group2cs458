@@ -88,25 +88,6 @@ def activate_view(request, uidb64, token):
 # Handles sending password reset/activation emails for users that request it
 def password_reset_view(request):
     if request.method == "POST":
-<<<<<<< HEAD
-        form = AuthenticationForm(request, data=request.POST)
-        if form.is_valid():
-            username = form.cleaned_data.get('username')
-            password = form.cleaned_data.get('password')
-            user = authenticate(username=username, password=password)
-            if user is not None:
-                login(request, user)
-                messages.info(request, f"You are now logged in as {username}")
-                return redirect('home')
-            else:
-                messages.error(request, "Invalid username or password")
-        else:
-            messages.error(request, "Invalid username or password")
-    form = AuthenticationForm()
-    return render(request, 
-                    'accounts/login.html',
-                    {'form':form})
-=======
         password_reset_form = PasswordResetForm(request.POST)
         if password_reset_form.is_valid():
             current_site = get_current_site(request)
@@ -173,5 +154,4 @@ def resend_activation(current_site, user):
     )
     email.fail_silently = False
     email.send()
->>>>>>> 5bd511118768821597a30f6a122fa335d1640829
 
