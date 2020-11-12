@@ -14,7 +14,6 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
-            name='Quote',
             fields=[
 
                 ('quoteID', models.CharField(max_length=16, primary_key=True, serialize=False)),

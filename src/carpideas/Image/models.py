@@ -19,7 +19,6 @@ class Image(models.Model):
 
 # Create your models here.
 class SearchQuery(models.Model):
-
 	#what the user is searching
 	userSearchQuery = models.CharField(max_length=255,unique =True)
 	#when was the last time the user seached this topic
@@ -47,5 +46,3 @@ class ImageURL(models.Model):
 	def create(self, cls, url, imageSeenOn, imageLiked, imageDisliked, searchQuery):
 		imageURL = cls(url = url,imageSeenOn = imageSeenOn, imageLiked= imageLiked, imageDisliked= imageDisliked,searchQuery=searchQuery)
 		return imageURL
-
-   
