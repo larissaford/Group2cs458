@@ -10,9 +10,8 @@ from skimage import io
 import os
 import requests
 import subprocess
-from subprocess import call
-from PIL import Image
-import base64
+import shlex
+import base64, urllib
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -32,10 +31,13 @@ def home_view(request):
 	# randNum = random.randint(0,16)
 	#user = User.objects.get(id=1)
 	posts = Quote.objects.get(quoteID=randNum)
+
+	#
+	bitsize = "64"
 	 
-	image_url = ImageGetter("pig").fetchImage()
+	image_url = ImageGetter("monster").fetchImage()
 	print(image_url)
-	pixelatedImage = pixelate_image(image_url, "64")
+	pixelatedImage = pixelate_image(image_url, bitsize)
 
 	#user = User.objects.get(id=1)
 
@@ -91,6 +93,9 @@ def old_pixelate_image(url):
 # this function takes a bitsize for the number of bits it should be pixelated to
 def pixelate_image(image_url, bitsize):
 	 	
+
+	#sanitize bitsize for extra security against shell injection
+	bitsize = shlex.quote(bitsize)
 	wd = os.getcwd()+"\\home\\" #uses the current working directory so that it works with others computers
 
 	image = io.imread(image_url) #from the scikit-image package (the import statement skimage), makes the url into an image png file
