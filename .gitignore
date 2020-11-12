@@ -3,6 +3,7 @@ image.png
 __pycache__/
 *.py[cod]
 *$py.class
+pixelated.png
 
 # C extensions
 *.so
