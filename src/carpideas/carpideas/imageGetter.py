@@ -74,6 +74,7 @@ class ImageGetter:
 
 # FUNCTIONALITY TESTS: 
 
+
 # uncomment the code below to test fetchImage (Ctrl + /)
 # ig = ImageGetter("fish")
 # url = ig.fetchImage()

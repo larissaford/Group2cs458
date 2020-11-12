@@ -28,7 +28,9 @@ def home_view(request):
 	randNum = 0 # For testing purposes
 	# randNum = random.randint(0,16)
 	#user = User.objects.get(id=1)
+
 	posts = Quote.objects.get(quoteID=randNum)
+
 	 
 	image = ImageGetter("dog").fetchImage()
 	#pixelation through PyPXL
