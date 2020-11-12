@@ -1,7 +1,8 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404, HttpResponseRedirect
 from django.http import HttpResponse
-from django.contrib.auth.models import User
+from accounts.models import CustomUser
 from .models import Quote
+from carpideas.imageGetter import ImageGetter
 
 import random
 import cv2
@@ -11,10 +12,10 @@ import requests
 import subprocess
 from subprocess import call
 from PIL import Image
-import urllib.request, base64
+import base64
 import numpy as np
 import matplotlib.pyplot as plt
-from carpideas.imageGetter import ImageGetter
+
 
 
 
@@ -32,7 +33,7 @@ def home_view(request):
 	#user = User.objects.get(id=1)
 	posts = Quote.objects.get(quoteID=randNum)
 	 
-	image_url = ImageGetter("cow").fetchImage()
+	image_url = ImageGetter("pig").fetchImage()
 	print(image_url)
 	pixelatedImage = pixelate_image(image_url, "64")
 
@@ -85,29 +86,39 @@ def old_pixelate_image(url):
 	return uri
 
  """
-
+# this function returns a URI that is used for displaying the pixelated image
+# this function takes a url for the image that wants to be pixelated
+# this function takes a bitsize for the number of bits it should be pixelated to
 def pixelate_image(image_url, bitsize):
 	 	
-	wd = os.getcwd()+"\\home\\"
+	wd = os.getcwd()+"\\home\\" #uses the current working directory so that it works with others computers
 
-	image = io.imread(image_url)
-	status = cv2.imwrite(wd+"image.png", cv2.cvtColor(image, cv2.COLOR_BGR2RGB))
+	image = io.imread(image_url) #from the scikit-image package (the import statement skimage), makes the url into an image png file
+	status = cv2.imwrite(wd+"image.png", cv2.cvtColor(image, cv2.COLOR_BGR2RGB)) #writes the image png file into the file system as image.png
+	
+
+
+	#testing that the image was written to the file system under the home folder
 	print()
-	print("Image written to file-system : ",status)
+	print("Image written to file-system at ",wd,": ", status)
 	
 	#pixelation through PyPXL, needs a png file
-	#"python pypxl_image.py -s 16 16 image.png pixelated.png"
+	#uses bitsize to determine the bitsize of the image
+	#subprocess uses multithreading
 	bashCommandForPixelation = "python "+wd+"pypxl_image.py -s "+bitsize+" "+bitsize+" "+wd+"image.png "+wd+"pixelated.png" 
 	print(bashCommandForPixelation)
 	print()
+	#test whether the subprocess works or returns an error
 	try:
 		process = subprocess.check_call(bashCommandForPixelation.split(),shell=True)
 	except subprocess.CalledProcessError:
-		print("Update the search term to something that hasn't been used before")
+		print("Try refreshing the page or update the search term to something that hasn't been used before")
 		print()
 		return -1
 
+	#if the subprocess works, save the successfully made pixelated image, pixelated.png, that is currently stored in the home folder into a URI
 	encoded = base64.b64encode(open(wd+"pixelated.png", "rb").read())
 	uri = urllib.parse.quote(encoded)
 
+	#the URI is used for displaying the image
 	return uri
