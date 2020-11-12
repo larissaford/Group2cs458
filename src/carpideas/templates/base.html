@@ -25,9 +25,9 @@
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
 
         <div class = "spotify">
-        <iframe src="https://open.spotify.com/embed/playlist/37i9dQZEVXcFZKf4BeOGz3" width="300" height="80" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>
+        <iframe src="https://open.spotify.com/embed/playlist/37i9dQZEVXcFZKf4BeOGz3" width="300" height="80" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe></div>
         <link rel="stylesheet" type="text/css" href="{% static 'css/gear.css' %}">
-    </div>
+    
     <!--
     <div id='digital-clock'>
         <span id='hour'></span><span class='red-dot'>:</span><span id='min'></span><span class='red-dot'>:</span><span id='second'></span>
@@ -35,10 +35,25 @@
 -->
       <div class = "format">
       <div class="clock">
-
+        <div class="clock__numbers">
+            <div class = "number"></div>
+            <div class="numbers__hour"></div>
+            <div class="numbers__hour"></div>
+            <div class = "number"></div>
+            <div class="numbers__hour"></div>
+            <div class="numbers__hour"></div>
+            <div class = "number"></div>
+            <div class="numbers__hour"></div>
+            <div class="numbers__hour"></div>
+            <div class = "number"></div>
+            <div class="numbers__hour"></div>
+            <div class="numbers__hour"></div>
+        </div>
         <div class="hand hour"></div>
         <div class="hand minute"></div>
-        <div class="hand second"></div> 
+        <div class="hand second"></div>
+
+         
     </div>
      </div>
      <script type = "text/javascript" src="{% static 'javascript/analog.js' %}"></script>

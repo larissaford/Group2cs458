@@ -1,3 +1,19 @@
+
+let numberElements = document.querySelectorAll(".clock__numbers > div");
+let radius = 360;
+let pegs = numberElements.length;
+let pegsI = radius / pegs;
+let i = 0;
+
+for( let number of numberElements ){
+    if( i > 0 ){
+        number.style.transform = "rotate(" + pegsI * i + "deg)";
+    }
+    i++;
+}
+
+
+
 let hourHand = document.querySelector('.hour');
 // minute hand 
 let minuteHand = document.querySelector('.minute');

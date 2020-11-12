@@ -4,18 +4,29 @@ html{
     background-size: cover;
 }
 h1{
-    color: blue;
+    color: white;
+    position:absolute;
+    width:100%;
+    bottom:0;
+    text-align:center;
 }
 h3{
-  text-align: center;
-  bottom: 125%;
-  left: 50%;
+  font-size: 50px;
+  position:absolute;
+  width:100%;
+  bottom:150px;
+  text-align:center;
 }
 #image{
     width: 100%;
     height: auto;
 }
-
+.spotify{
+  position: absolute;
+  right: 20px;
+  top: 80px;
+  display: inline-block;
+}
 
 .popup {
 
@@ -145,22 +156,24 @@ h3{
 */
   .clock{
     
-    width: 200px;
-    height: 200px;
+    width: 250px;
+    height: 250px;
     background-color:transparent;
     border-radius: 50%;
-    border: 8px solid rgb(17, 17, 17);
+    border: 8px solid rgb(32, 32, 32);
     box-shadow: 2px 2px 8px 2px rgba(22, 45, 75, 0.92);
-    background-image: url('clock.png');
     background-size: cover;
-    position: relative;
+    position:absolute;
+ 
+    bottom:250px;
+    text-align:center
   }
   .clock::before {
     content: '';
     width: 15px;
     height: 15px;
     border-radius: 50%;
-    background-color: rgb(17, 17, 17);
+    background-color: rgb(32, 32, 32);
     position: absolute;
     top: 50%;
     left: 51%;
@@ -181,8 +194,9 @@ h3{
   }
   .hour {
     width: 7px;
-    height: 28%;
-    background-color: rgb(17, 17, 17);
+    height: 35%;
+    top: 15%;
+    background-color: rgb(32, 32, 32);
   }
   
   /* hour hand style ends */
@@ -191,16 +205,72 @@ h3{
   .minute {
     width: 5px;
     height: 38%;
-    background-color:rgb(17, 17, 17);
+    background-color:rgb(32, 32, 32);
   }
   
   /* minute hand style ends */
   /* second hand style */
   
   .second {
-    width: 3px;
+    position: absolute;
     height: 45%;
+    width: 0.11em;
+    top: 5%;
+    transform-origin: 50% 100%;
     background-color: #ff0000;
   }
   
   /* second-hand style ends */
+
+
+
+
+
+  .clock__numbers {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+}
+
+.clock__numbers > div {
+    position: absolute;
+    display: flex;
+    flex-flow: column;
+    justify-content: flex-start;
+    align-items: center;
+    height: 90%;
+    top: 6%;
+    /* margin-top: 5%; */
+}
+
+.clock__numbers > .number::before {
+  position: relative;
+  content: "";
+  background-color: #222;
+  display: block;
+  height: 0.55em;
+  width: 0.10em;
+  margin-bottom: 0.5em;
+    width: 0.25em;
+    height: .70em;
+}
+
+.number {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.clock__numbers > .numbers__hour::before {
+  position: relative;
+  content: "";
+  background-color: #222;
+  display: block;
+  height: 0.55em;
+  width: 0.10em;
+  margin-bottom: 0.5em;
+    width: 0.14em;
+    height: .50em;
+}
