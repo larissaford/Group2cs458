@@ -1,21 +1,25 @@
 from django.db import models
-from django.contrib.auth.models import User
 from accounts.models import CustomUser
+
+
 # from django.conf import settings
 
 # Create your models here.
-#class Image(models.Model):
- #   imageID = models.CharField(max_length=16, primary_key= True)
-  #  url = models.URLField()
-   # width = models.IntegerField()
-    #height = models.IntegerField()
-    #users = models.ManyToManyField(User, related_name='liked_images')
-    #users = models.ManyToManyField(User, related_name='skipped_images')
-    #def __unicode__(self):
-    #    return self.name
+class Image(models.Model):
+    imageID = models.CharField(max_length=16, primary_key=True)
+    url = models.URLField()
+    width = models.IntegerField()
+    height = models.IntegerField()
+    users = models.ManyToManyField(CustomUser, related_name='liked_images')
+    users = models.ManyToManyField(CustomUser, related_name='skipped_images')
+
+    def __unicode__(self):
+        return self.name
+
 
 # Create your models here.
 class SearchQuery(models.Model):
+
 	#what the user is searching
 	userSearchQuery = models.CharField(max_length=255,unique =True)
 	#when was the last time the user seached this topic
@@ -43,3 +47,5 @@ class ImageURL(models.Model):
 	def create(self, cls, url, imageSeenOn, imageLiked, imageDisliked, searchQuery):
 		imageURL = cls(url = url,imageSeenOn = imageSeenOn, imageLiked= imageLiked, imageDisliked= imageDisliked,searchQuery=searchQuery)
 		return imageURL
+
+   
