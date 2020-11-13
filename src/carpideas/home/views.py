@@ -31,21 +31,15 @@ def home_view(request):
 	# randNum = random.randint(0,16)
 	#user = User.objects.get(id=1)
 
+
 	posts = Quote.objects.get(quoteID=randNum)
-<<<<<<< HEAD
 
 	#get this from the user
 	bitsize = "64"
 	 
-	image_url = ImageGetter("monster").fetchImage()
+	image_url = ImageGetter("puppy").fetchImage()
 	print(image_url)
 	pixelatedImage = pixelate_image(image_url, bitsize)
-=======
-	image = 'https://source.unsplash.com/random/1920x1080'
-	#image = ImageGetter("cat").fetchImage()
-	pixelatedImage = image
-	
->>>>>>> bootstrap
 
 	#user = User.objects.get(id=1)
 
@@ -100,11 +94,15 @@ def old_pixelate_image(url):
 # this function takes a url for the image that wants to be pixelated
 # this function takes a bitsize for the number of bits it should be pixelated to
 def pixelate_image(image_url, bitsize):
+
 	 	
 
 	#sanitize bitsize for extra security against shell injection
 	bitsize = shlex.quote(bitsize)
 	wd = os.getcwd()+"\\home\\" #uses the current working directory so that it works with others computers
+
+	if os.path.exists(wd+"pixelated.png"):
+		os.remove(wd+"pixelated.png")
 
 	image = io.imread(image_url) #from the scikit-image package (the import statement skimage), makes the url into an image png file
 	status = cv2.imwrite(wd+"image.png", cv2.cvtColor(image, cv2.COLOR_BGR2RGB)) #writes the image png file into the file system as image.png
