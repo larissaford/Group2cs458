@@ -5,6 +5,9 @@ html{
 }
 h1{
     color: white;
+    font-weight: lighter;
+    font-size: 30px;
+    font-style: italic;
     position:absolute;
     width:100%;
     bottom:0;
@@ -14,7 +17,7 @@ h3{
   font-size: 50px;
   position:absolute;
   width:100%;
-  bottom:150px;
+  bottom:200px;
   text-align:center;
 }
 #image{
@@ -165,7 +168,7 @@ h3{
     background-size: cover;
     position:absolute;
  
-    bottom:250px;
+    bottom:275px;
     text-align:center
   }
   .clock::before {
