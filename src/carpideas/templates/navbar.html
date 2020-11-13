@@ -1,26 +1,29 @@
 {% block content %}
 
-<!-- As a link -->
+<!--uses bootstrap to create top navbar-->
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <a class="navbar-brand" href="http://127.0.0.1:8000/">CarpIdeas</a>
     <div class = "container">
         <form class="form-inline">
+            <!--search bar in navbar-->
             <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
             <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
         </form>
 
     </div>
+    <!--collapsable navbar when compressed by window-->
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
       <div class="navbar-nav">
-
+        <!--navbar links to be implemented-->
         <a class="nav-item nav-link" href="#">About</a>
         <a class="nav-item nav-link" href="#">Contact Us</a>
         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
             Customize
         </button>
+        <!--modal popup for costumize button-->
           <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">
               <div class="modal-content">
@@ -33,6 +36,7 @@
                 <div class="modal-body">
                   Toggle Widgets and other functions here?
                     <ul>
+                        <!--switch boxes within modal popup-->
                         <li>Spotify
                             <label class="switch">
                             <input type="checkbox">
@@ -48,6 +52,7 @@
                     </ul>
                 </div>
                 <div class="modal-footer">
+                  <!--close and save changes button-->
                   <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                   <button type="button" class="btn btn-primary">Save changes</button>
                 </div>

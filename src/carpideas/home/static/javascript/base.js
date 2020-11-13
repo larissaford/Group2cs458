@@ -1,18 +1,18 @@
-function likeButton(){
+function likeButton(){ //liked button displays popup
     var popup = document.getElementById("liked");
     popup.classList.toggle("show");
 }
-function dislikeButton(){
+function dislikeButton(){ //disliked button displays popup
     var popup = document.getElementById("disliked");
     popup.classList.toggle("show");
 }
-function refreshPage(){
+function refreshPage(){ //skip button refreshes page
     window.location.reload();
 } 
 
 
 
-function openForm() {
+function openForm() { //used for costumization menu
     document.getElementById("myForm").style.display = "block";
   }
   
@@ -22,7 +22,7 @@ function openForm() {
 
 
 
-function showclock() {
+function showclock() { //getting time for the digital clock (currently commented out so not displayed)
   let today = new Date();
   let hours = today.getHours();
   let mins = today.getMinutes();

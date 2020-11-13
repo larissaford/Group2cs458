@@ -1,4 +1,4 @@
-
+//sets the roation of the tick marks on the clock face
 let numberElements = document.querySelectorAll(".clock__numbers > div");
 let radius = 360;
 let pegs = numberElements.length;
@@ -13,7 +13,7 @@ for( let number of numberElements ){
 }
 
 
-
+//hour hand
 let hourHand = document.querySelector('.hour');
 // minute hand 
 let minuteHand = document.querySelector('.minute');
