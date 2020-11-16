@@ -3,12 +3,12 @@
 {% block content%}
 
     <body id="image" style="background: url({{image}}) no-repeat center fixed; background-size: cover;";>
-
+    {% include "widget_bank.html" %}
     
     
     
 
     <h3 style="color:white">Welcome, {{request.user}}</h3>
     <img src="data:image/png;base64,{{data}}" alt="" height= "250", width="250" >
-
+    <button onclick="activateBank()">Widget Bank</button>
 {% endblock %}
