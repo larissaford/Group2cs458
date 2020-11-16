@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
     <!--link to css and js-->
     <link rel="stylesheet" type="text/css" href="{% static 'css/base.css' %}">
-    <script src="{% static 'javascript/base.js' %}"></script>
+
     <title>CarpIdeas</title>
     <style type="text/css">
     </style>
@@ -16,6 +16,9 @@
 <body>
     {% include 'navbar.html' %}
     {% include 'options.html' %}
+    <!--<body id="image" style="background-image: url('{% static 'https://source.unsplash.com/random/1920x1080'%}')";>-->
+
+
 
         <!--link jquery to bootsrap-->
         <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
@@ -34,8 +37,8 @@
 
       <!--Quote of the day Widget by Calendar Labs-->
       <h1><!--Do not change below this line--><div><iframe src="//widget.calendarlabs.com/v1/quot.php?cid=101&ver=1.2&uid=7184178485&c=random&l=en&cbg=transparent&cb=0&cbc=FFFFFF&cf=calibri&cfg=FFFFFF&qfs=i&tfg=FFFFFF&tfs=i&afc=FFFFFF&afs=i" width="200" height="185" marginwidth=0 marginheight=0 frameborder=no scrolling=no allowtransparency='true'>Loading...</iframe><div style="width:200px;font-size:12px;color:#000;"></a></div></div><!--Do not change above this line--></h1>
- 
-      <!--Analog clock-->  
+
+      <!--Analog clock-->
       <div class = "format">
       <div class="clock">
         <div class="clock__numbers">
@@ -61,7 +64,10 @@
      </div>
      <!--link to js-->
      <script type = "text/javascript" src="{% static 'javascript/analog.js' %}"></script>
+        <script src="{% static 'javascript/base.js' %}"></script>
+
         {% block content%}
-    {% endblock %}
+        {% endblock %}
+
 </body>
 </html>
