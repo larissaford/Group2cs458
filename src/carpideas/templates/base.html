@@ -23,8 +23,9 @@
         <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
         <!--Spotify widget-->
-        <div class = "spotify">
-            <iframe src="https://open.spotify.com/embed/playlist/37i9dQZEVXcFZKf4BeOGz3" width="300" height="80" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe></div>
+<!--        <div class = "spotify">-->
+<!--            <iframe src="https://open.spotify.com/embed/playlist/37i9dQZEVXcFZKf4BeOGz3" width="300" height="80" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>-->
+<!--        </div>-->
         <!--link to css-->
         <link rel="stylesheet" type="text/css" href="{% static 'css/gear.css' %}">
 
@@ -36,33 +37,8 @@
       <!--Quote of the day Widget by Calendar Labs-->
       <h1><!--Do not change below this line--><div><iframe src="//widget.calendarlabs.com/v1/quot.php?cid=101&ver=1.2&uid=7184178485&c=random&l=en&cbg=transparent&cb=0&cbc=FFFFFF&cf=calibri&cfg=FFFFFF&qfs=i&tfg=FFFFFF&tfs=i&afc=FFFFFF&afs=i" width="200" height="185" marginwidth=0 marginheight=0 frameborder=no scrolling=no allowtransparency='true'>Loading...</iframe><div style="width:200px;font-size:12px;color:#000;"></a></div></div><!--Do not change above this line--></h1>
 
-      <!--Analog clock-->
-      <div class = "format">
-      <div class="clock">
-        <div class="clock__numbers">
-            <!--creates the clock face-->
-            <div class = "number"></div>
-            <div class="numbers__hour"></div>
-            <div class="numbers__hour"></div>
-            <div class = "number"></div>
-            <div class="numbers__hour"></div>
-            <div class="numbers__hour"></div>
-            <div class = "number"></div>
-            <div class="numbers__hour"></div>
-            <div class="numbers__hour"></div>
-            <div class = "number"></div>
-            <div class="numbers__hour"></div>
-            <div class="numbers__hour"></div>
-        </div>
-        <!--clock hands-->
-        <div class="hand hour"></div>
-        <div class="hand minute"></div>
-        <div class="hand second"></div>
-    </div>
-     </div>
      <!--link to js-->
-     <script type = "text/javascript" src="{% static 'javascript/analog.js' %}"></script>
-        <script src="{% static 'javascript/base.js' %}"></script>
+    <script src="{% static 'javascript/base.js' %}"></script>
 
         {% block content%}
         {% endblock %}

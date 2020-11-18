@@ -171,6 +171,11 @@ Start of analog clock below*/
   transition: 0.5s;
 }
 
+.bank:hover {
+  border-width: 5px;
+  border-color: yellow;
+}
+
 .bank li {
   padding: 8px 8px 8px 32px;
   text-decoration: none;
