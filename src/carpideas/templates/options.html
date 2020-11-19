@@ -29,7 +29,11 @@
             <li>
                 <!--Download Image button-->
                 <div class = "downloadButton">
-                <a href="https://source.unsplash.com/random/1920x1080" download = "myimage"><button name = "download" class="btn btn-secondary">Download</button></a>
+                  <a target="download_image" 
+                      class="btn btn-secondary" 
+                      href="pixelate_image({{image}})/?pixelate_image={{image}}">
+                      Download Image
+                  </a>
                 </div>
             </li>
             <li>
@@ -37,8 +41,7 @@
                 <button name = "skip" class="btn btn-secondary" type="submit"  onClick="refreshPage()">Skip Background</button>
             </li>
             <li>
-              <!--Pixelate Image button-->
-              <button name = "pixelate" class="btn btn-secondary" type="submit">Pixelate</button>
+              <a class="btn btn-secondary" href="/pixelate_image">Pixelate Image</a>
             </li>
         </ul>
       </div>

@@ -63,6 +63,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django.middleware.locale.LocaleMiddleware'
+
 ]
 
 ROOT_URLCONF = 'carpideas.urls'
@@ -151,3 +153,7 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = os.environ['EMAIL_USERNAME']
 EMAIL_HOST_PASSWORD = os.environ['EMAIL_PASSWORD']
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+IMAGE_CACHE_ROOT=os.path.join(BASE_DIR, 'media')
