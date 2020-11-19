@@ -32,20 +32,13 @@ def home_view(request):
 	#user = User.objects.get(id=1)
 
 	posts = Quote.objects.get(quoteID=randNum)
-<<<<<<< HEAD
 
 	#get this from the user
 	bitsize = "64"
 	 
-	image_url = ImageGetter("monster").fetchImage()
+	image_url = ImageGetter("beach").fetchImage()
 	print(image_url)
 	pixelatedImage = pixelate_image(image_url, bitsize)
-=======
-	image = 'https://source.unsplash.com/random/1920x1080'
-	#image = ImageGetter("cat").fetchImage()
-	pixelatedImage = image
-	
->>>>>>> bootstrap
 
 	#user = User.objects.get(id=1)
 
