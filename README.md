@@ -5,7 +5,7 @@ Software Engineering Practicum
 
 step 0:
 
-	- Make sure you have pip, virtualenv, and pipenv installed.
+	- Make sure you have python, pip, virtualenv, and pipenv installed. Python 3.9 currently doesn't work, and python 3.8 needs to be the 64 bit version
 	- Go to the folder you want the repository in through your terminal.
 	
 Inside your terminal:
