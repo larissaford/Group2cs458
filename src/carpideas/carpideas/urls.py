@@ -22,7 +22,7 @@ from accounts.tokens import account_activation_token
 
 from django.contrib.auth import views as auth_views
 from accounts.views import activate_view, password_reset_view, register_view
-from home.views import home_view, pixelate_view, download_image
+from home.views import home_view, pixelate_view, download_view
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -50,7 +50,8 @@ urlpatterns = [
                                                 redirect_authenticated_user=True), name="login"),
     path('logout/', auth_views.LogoutView.as_view(template_name="accounts/login.html"), name="logout"),
     path('', home_view, name="home"),
-    path('pixelate/', pixelate_view, name="pixelate")
+    path('pixelate/', pixelate_view, name="pixelate"),
+    path('download/', download_view, name="download")
 
     #testing
     #path('', include('image.urls')),

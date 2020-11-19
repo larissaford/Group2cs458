@@ -4,6 +4,9 @@ from accounts.models import CustomUser
 from .models import Quote
 from carpideas.imageGetter import ImageGetter
 
+from requests.auth import HTTPBasicAuth
+
+import shutil
 from PIL import Image
 import random
 import cv2
@@ -15,15 +18,58 @@ import shlex
 import base64, urllib
 import numpy as np
 import matplotlib.pyplot as plt
+from pathlib import Path
+
+class Image:
+	def __init__(self, image='0'):
+	   self._image = ImageGetter(image).fetchImage()
+
+	@property 
+	def GetImage(self):
+		return self.__image
+
+	@GetImage.setter
+	def GetImage(self, name):
+		self.__image = ImageGetter(name).fetchImage()
 
 
-def get_image():
-	return ImageGetter("pencil").fetchImage()
+image = Image()
+
+def download_view(request):
+
+	global image
+
+	image_url = image._image
+
+	img_data = requests.get(image_url, auth=HTTPBasicAuth('user', 'pass')).content
+
+	randNum = 0 # For testing purposes
+	# randNum = random.randint(0,16)
+	#user = User.objects.get(id=1)
+
+	posts = Quote.objects.get(quoteID=randNum)
+
+	my_context = {
+	#    'username' : user.username
+		'image': image_url,
+		'quote': posts.quote
+	}
+	
+	print('Beginning file download with urllib2...')
+	path_to_download_folder = str(os.path.join(Path.home(), "Downloads", "image.png"))
+
+	image = io.imread(image_url)
+	status = cv2.imwrite(path_to_download_folder, cv2.cvtColor(image, cv2.COLOR_BGR2RGB))
+	print("Image written to file-system at ",path_to_download_folder,": ", status)		
+	if not request.user.is_authenticated:
+		return redirect("login")
+	else:
+		return render(request, "home.html", my_context)
 
 
 def pixelate_view(request):
 	bitsize = "64"
-	#pixelatedImage = pixelate_image(get_image(), bitsize)
+	#pixelatedImage = pixelate_image(image._image, bitsize)
 	pixelatedImage = getPixelatedImage()
 
 	my_context = {
@@ -50,8 +96,8 @@ def home_view(request):
 	#get this from the user
 	bitsize = "64"
 	 
-	image_url = get_image()
-	print(image_url)
+	image_url = image._image
+	#print(image_url)
 	
 	#user = User.objects.get(id=1)
 
@@ -67,15 +113,6 @@ def home_view(request):
 	else:
 		return render(request, "home.html", my_context)
 		
-
-
-def download_image(image_url):
-	
-	img_data = requests.get(image_url).content
-	with open('image.jpg', 'wb') as handler:
-		handler.write(img_data)
-	return redirect('home')
-
 
 def old_pixelate_image(url):
 	
