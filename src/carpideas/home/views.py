@@ -44,6 +44,9 @@ def home_view(request):
 
 	posts = Quote.objects.get(quoteID=randNum)
 
+	#LARISSA TO-DO: make it so that pixelation runs in the background and home view runs without waiting,
+	# but clicking on the pixelate button still waits in case pixelation wasn't done yet. 
+
 	#get this from the user
 	bitsize = "64"
 	 
@@ -147,14 +150,3 @@ def getPixelatedImage():
 		img = f.read()
     
 	return prefix + base64.b64encode(img).decode('utf-8')
-	#print(wd + "pixelated.png")
-	#if the subprocess works, save the successfully made pixelated image, pixelated.png, that is currently stored in the home folder into a URI
-	#encoded = base64.b64encode(open(wd+"pixelated.png", "rb").read())
-	#print(encoded)
-	#uri = urllib.parse.quote(encoded)
-
-	#the URI is used for displaying the image
-	#img = Image.open(wd + "pixelated.png")
-
-	#return encoded
-	#return redirect('home')
