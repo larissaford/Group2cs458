@@ -10,6 +10,7 @@ import shutil
 from PIL import Image
 import random
 import cv2
+from io import BytesIO
 from skimage import io
 import os
 import requests
@@ -20,7 +21,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from pathlib import Path
 
-class Image:
+class ImageClass:
 	def __init__(self, image='0'):
 	   self._image = ImageGetter(image).fetchImage()
 
@@ -33,7 +34,7 @@ class Image:
 		self.__image = ImageGetter(name).fetchImage()
 
 
-image = Image()
+image = ImageClass()
 
 def download_view(request):
 
@@ -70,7 +71,8 @@ def download_view(request):
 def pixelate_view(request):
 	bitsize = "64"
 	#pixelatedImage = pixelate_image(image._image, bitsize)
-	pixelatedImage = getPixelatedImage()
+	#pixelatedImage = getPixelatedImage()
+	pixelatedImage = old_pixelate_image(image._image)
 
 	my_context = {
 	#    'username' : user.username
@@ -83,6 +85,8 @@ def pixelate_view(request):
 		return render(request, "pixelated.html", my_context)
 
 def home_view(request):
+
+	global image
 	#return HttpResponse("<h1>Hello World</h1>")
 	randNum = 0 # For testing purposes
 	# randNum = random.randint(0,16)
@@ -96,7 +100,7 @@ def home_view(request):
 	#get this from the user
 	bitsize = "64"
 	 
-	image_url = image._image
+	image_url = image._image #to-do: call setter
 	#print(image_url)
 	
 	#user = User.objects.get(id=1)
@@ -116,9 +120,8 @@ def home_view(request):
 
 def old_pixelate_image(url):
 	
-	"""
 	fd = urllib.request.urlopen(url)
-	image_file = io.BytesIO(fd.read())
+	image_file = BytesIO(fd.read())
 	image = Image.open(image_file).convert('LA')
 	Xg = np.array(image)
 	X = Xg[:,:,0]
@@ -132,14 +135,12 @@ def old_pixelate_image(url):
 	plt.savefig('image.png', format='png', bbox_inches=0)
 	
 	fig = plt.gcf()
-	buf = io.BytesIO()
+	buf = BytesIO()
 	fig.savefig(buf, format='png')
 	buf.seek(0)
-	string = base64.b64encode(buf.read())
-	uri = urllib.parse.quote(string)
-	return uri
+	prefix = f'data:image/;base64,'
+	return prefix + base64.b64encode(buf.read()).decode('utf-8')
 
- """
 # this function returns a URI that is used for displaying the pixelated image
 # this function takes a url for the image that wants to be pixelated
 # this function takes a bitsize for the number of bits it should be pixelated to
