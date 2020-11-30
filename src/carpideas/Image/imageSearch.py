@@ -2,18 +2,23 @@
 #last upddat 11/10/20-00.19.00
 
 from models import SearchQuery, ImageURL
-from carpideas.imageGetter import ImageGetter
-from Image.queue import ImageQueue
+#from carpideas.imageGetter import ImageGetter
+
 
 from datetime import datetime
 
 class ImageSearch:
 
-	def _init_(self,search, queue):
+	def _init_(self,search):
 		self.search = search
-		self.queue = ImageQueue()
+		
 
 	# creates a list of past images that have not been seen 
+
+	# past_image - Tracen Vail
+	# Created 11/05/2020
+	# last update l1/30/2020
+	# creates a list of past images that have been not been seen
 	def past_image(self,search):
 		past_image_list =list()
 		# create a list of images from past search
@@ -23,12 +28,22 @@ class ImageSearch:
 		return past_image_list	
 
 
-	# compares two list and returns a new list of urls
+	# compare_two_list
+	# Created 11/05/2020
+	# Last Update
+	# Paramenter list_old is a list of old urls that are from the database
+	# Paramenter list_new is a list of new urls that are from image getter
+	# This functions will compare a two list and returns an unigue list of urls that are not in the old list
 	def compare_two_list(self, list_old,list_new):
 		return (list(list(set(list_new)-set(list_old)) + list(set(list_new)-set(list_old))))
 
 
-	# i dont think i need this methond any more
+	# compare_image
+	# Created 10/20/2020
+	# last Update
+	# parameter url is the url of the of the new image from image getter 
+	# parameter past_image_list is a list of past image searchs objects
+	# This functions will compare the new image url to all of the old imageURL url
 	def compare_image(self, url,past_image_list):
 		url_unique = False
 		for each in past_image_list:
@@ -37,19 +52,39 @@ class ImageSearch:
 				
 		url_unique =True
 		return url_unique
-	# creates and saves a new Image URL to the data base
+
+	# new_image_url - Tracen Vail
+	# Created 10/20/2020
+	# Last Updated 11/20/2020
+	# Parameter new_image_url is a url from image getter 
+	# Parameter search is the search term that the user has inputed 
+	# This fucntion creates a new ImageURL object and saves it to the database
+	
+
 	def new_image_url(self,new_image_url, search):
-		new_image_url = new_image_url(url = new_image_url,imageSeenOn = None, imageLiked= None, imageDisliked= None,searchQuery=search)
+		new_image_url = ImageURL(url = new_image_url,imageSeenOn = None, imageLiked= None, imageDisliked= None,searchQuery=search)
 		new_image_url.save()
 
-	# creates a new object of SearchQuery and saves it to the datebase
+	# new_user_search_entery
+	# Created 10/20/2020
+	# Last Updated
+	# Parameter search is the search term that the user has inputed
+	# this function creates a new SearcQuery opject and saves it to the database
 	def new_user_search_entery(self,search):
 		searchQuery = SearchQuery(userSearchQuery=search, lastSearched = datetime.now)
 		searchQuery.save()
-		imageGetter = ImageGetter(searchQuery.search)
-		self.new_image_url(imageGetter.fetchImage(),search)
+		#imageGetter = ImageGetter(searchQuery.search)
+		#self.new_image_url(imageGetter.fetchImage(),search)
 		
 	#gets a list of image url from the imagegetter and then compares the new image url list that is return from imagegetter to the past image url and then creates a new list 
+
+	# mass_fill
+	# Created 11/05/2020
+	# Last Updated
+	# Parameter past_image_list is list of past image urls 
+	# Parameter search is the search term that the user has inputed
+	# This function will call the fechALLfunction in image getter that will return a massive list of new url that can be added to the database.
+	# The mass_fill will also call the compare_two_list function return a unique list of url that will then be added to the data base
 
 	def mass_fill(self, past_image_list,search):
 		unique_url = list()
@@ -57,6 +92,14 @@ class ImageSearch:
 	#	unique_url = self.compare_two_list(imageGetter.fetchaAllImage(),past_image_list) // waiting on imageGetter.fechAll()
 		for each in unique_url:
 			self.new_image_url(unique_url, search)
+
+	
+	# past_search -Tracen Vail
+	# Created 10/10/2020
+	# Last Update
+	# Parameter search is the user input that
+	# This function compares the user search to past searches that the user has done
+	
 
 	def past_search(self, search):
 		print(search)

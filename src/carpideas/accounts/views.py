@@ -32,11 +32,13 @@ def register_view(request):
     register_form = RegisterForm()
     if request.method == "POST":  # check method
         register_form = RegisterForm(request.POST)
+        # Create a user that is not active
         if register_form.is_valid():
             user = register_form.save(commit=False)
             user.is_active = False
             register_form.save()
 
+            # Set up context for email message
             current_site = get_current_site(request)
             username = register_form.cleaned_data.get('username')
             to_email = register_form.cleaned_data.get('email')
@@ -57,7 +59,8 @@ def register_view(request):
             email.send()
 
             messages.success(request,
-                             f"Account was created for {username}. Please check your email for an activation link")
+                             f"Account was created for {username}. "
+                             f"Please check your email for an activation link")
 
             return redirect("login")
 
@@ -69,17 +72,18 @@ def register_view(request):
 
 # Triggered when user registers and clicks on the link sent in email
 def activate_view(request, uidb64, token):
+    # Try to decode the token and get a user
     try:
         uid = force_text(urlsafe_base64_decode(uidb64))
         user = CustomUser.objects.get(pk=uid)
+    # Decoding Failed or User doesn't exits
     except(TypeError, ValueError, OverflowError, CustomUser.DoesNotExist):
         user = None
+    # Update user to active and route to login page
     if user is not None and account_activation_token.check_token(user, token):
         user.is_active = True
         user.save()
-        # login(request, user)
         messages.success(request, "Your account is now active!")
-        # return redirect('home')
         return redirect('login')
     else:
         return render(request, 'accounts/activate_fail.html')
@@ -87,21 +91,29 @@ def activate_view(request, uidb64, token):
 
 # Handles sending password reset/activation emails for users that request it
 def password_reset_view(request):
+    # Check if user is posting data
     if request.method == "POST":
         password_reset_form = PasswordResetForm(request.POST)
+
+        # Form passes built in checks
         if password_reset_form.is_valid():
             current_site = get_current_site(request)
             data = password_reset_form.cleaned_data['email']
             associated_users = CustomUser.objects.filter(Q(email=data))
+
+            # Check if there are users with that email
             if associated_users.exists():
                 for user in associated_users:
+                    # If user is not active, send activation email
                     if not user.is_active:
                         resend_activation(current_site, user)
                         messages.success(request,
                                          f"Activation link resent for {user.username}. "
                                          f"Please check your email for an activation link")
                         return redirect('login')
+                    # Send password reset email
                     else:
+                        # Get Data needed for email
                         user_email_address = user.email
                         subject = "Password Reset Requested"
                         email_template_name = "accounts/emails/password_reset_email.html"
@@ -128,6 +140,8 @@ def password_reset_view(request):
                         except BadHeaderError:
                             return HttpResponse('Invalid header found.')
                         return redirect("/password_reset/done")
+
+    # First time on page, go to blank Password Reset Page
     password_reset_form = PasswordResetForm()
     context = {
         "form": password_reset_form

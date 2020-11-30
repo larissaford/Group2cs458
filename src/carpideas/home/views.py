@@ -31,6 +31,7 @@ def home_view(request):
 	# randNum = random.randint(0,16)
 	#user = User.objects.get(id=1)
 
+
 	posts = Quote.objects.get(quoteID=randNum)
 
 	#get this from the user
@@ -38,6 +39,8 @@ def home_view(request):
 	 
 	image_url = ImageGetter("beach").fetchImage()
 	print(image_url)
+	for x in range(100):
+		print("sssssssssssssssssssssssssssssssssssssssss")
 	pixelatedImage = pixelate_image(image_url, bitsize)
 
 	#user = User.objects.get(id=1)
@@ -93,11 +96,15 @@ def old_pixelate_image(url):
 # this function takes a url for the image that wants to be pixelated
 # this function takes a bitsize for the number of bits it should be pixelated to
 def pixelate_image(image_url, bitsize):
+
 	 	
 
 	#sanitize bitsize for extra security against shell injection
 	bitsize = shlex.quote(bitsize)
 	wd = os.getcwd()+"\\home\\" #uses the current working directory so that it works with others computers
+
+	if os.path.exists(wd+"pixelated.png"):
+		os.remove(wd+"pixelated.png")
 
 	image = io.imread(image_url) #from the scikit-image package (the import statement skimage), makes the url into an image png file
 	status = cv2.imwrite(wd+"image.png", cv2.cvtColor(image, cv2.COLOR_BGR2RGB)) #writes the image png file into the file system as image.png
@@ -128,3 +135,6 @@ def pixelate_image(image_url, bitsize):
 
 	#the URI is used for displaying the image
 	return uri
+def search(request):
+	print("Hello world ")
+

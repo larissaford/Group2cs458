@@ -2,7 +2,7 @@ from django.contrib.auth.tokens import PasswordResetTokenGenerator
 import six
 
 
-# have to change to remove django.utils.six package
+# Tokenizer for account activation/password reset
 class TokenGenerator(PasswordResetTokenGenerator):
 
     def _make_hash_value(self, user, timestamp):
