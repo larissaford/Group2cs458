@@ -14,14 +14,11 @@ h1{
 }
 h3{
   height: inherit;
-background: inherit;
--webkit-background-clip: text;
-background-clip: text;
-color: transparent;
-
-filter: invert(1);
-
-
+  background: inherit;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  filter: invert(1);
   font-size: 50px;
   position:absolute;
   width:100%;
