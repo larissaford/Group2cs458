@@ -6,10 +6,27 @@
     <div class = "container">
         <form class="form-inline">
             <!--search bar in navbar-->
-            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+            <form method="POST" action="{% url 'sreach'%">
+              <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+              <button class="btn btn-outline-success my-2 my-sm-0" type="submit" name = search>Search</button>
+            </form>
         </form>
-
+        <form method="POST" action="{% url 'login' %}">
+          {% csrf_token %}
+      
+          {% for field in form %}
+              <div>
+                  {{ field.label }}
+                  {{ field }}
+              </div>
+            {% endfor %}
+          {% if form.errors %}
+          <div>
+            <p>Your username and/or password was incorrect.</p>
+          </div>
+          {% endif %}
+          <input type="submit" value="Login"/>
+        </form>
     </div>
     <!--collapsable navbar when compressed by window-->
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">

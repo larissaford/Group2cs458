@@ -39,6 +39,8 @@ def home_view(request):
 	 
 	image_url = ImageGetter("puppy").fetchImage()
 	print(image_url)
+	for x in range(100):
+		print("sssssssssssssssssssssssssssssssssssssssss")
 	pixelatedImage = pixelate_image(image_url, bitsize)
 
 	#user = User.objects.get(id=1)
@@ -133,3 +135,6 @@ def pixelate_image(image_url, bitsize):
 
 	#the URI is used for displaying the image
 	return uri
+def search(request):
+	print("Hello world ")
+
