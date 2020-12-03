@@ -13,6 +13,12 @@ h1{
     text-align:center;
 }
 h3{
+  height: inherit;
+  background: inherit;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  filter: invert(1);
   font-size: 50px;
   position:absolute;
   width:100%;
@@ -142,7 +148,7 @@ h3{
   .red-dot {
     color: #2196F3;
   }
-    
+
 Start of analog clock below*/
   .clock{
     width: 250px;
@@ -156,6 +162,39 @@ Start of analog clock below*/
     bottom:275px;
     text-align:center
   }
+
+  /* Widget Bank */
+.bank {
+  height: 100%;
+  width: 0;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  right: 0;
+  background-color: whitesmoke;
+  overflow-x: hidden;
+  padding-top: 60px;
+  transition: 0.5s;
+}
+
+.bank:hover {
+  border-width: 5px;
+  border-color: yellow;
+}
+
+.bank li {
+  padding: 8px 8px 8px 32px;
+  text-decoration: none;
+  font-size: 25px;
+  color: black;
+  display: block;
+  transition: 0.3s;
+}
+
+.bank li:hover {
+  color: red;
+}
+
   .clock::before { /*places the center of the clock*/
     content: '';
     width: 15px;
@@ -245,6 +284,20 @@ Start of analog clock below*/
   height: 0.55em;
   width: 0.10em;
   margin-bottom: 0.5em;
-    width: 0.14em;
-    height: .50em;
+  width: 0.14em;
+  height: .50em;
+}
+.stock{
+  position: absolute;
+  right: 20px;
+  top: 180px;
+  display: inline-block;
+  width: 300px;
+}
+.weather{
+  position: absolute;
+  right: 35px;
+  top: 250px;
+  display: inline-block;
+  width: 400px;
 }

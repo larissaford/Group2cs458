@@ -24,6 +24,7 @@ from django.contrib.auth import views as auth_views
 from accounts.views import activate_view, password_reset_view, register_view
 from home.views import home_view, pixelate_view, download_view, cookie_session, cookie_delete, create_session, access_session, delete_session
 
+
 urlpatterns = [
     path('admin/', admin.site.urls),
 
@@ -49,6 +50,9 @@ urlpatterns = [
     path('login/', auth_views.LoginView.as_view(template_name="accounts/login.html",
                                                 redirect_authenticated_user=True), name="login"),
     path('logout/', auth_views.LogoutView.as_view(template_name="accounts/login.html"), name="logout"),
+    
+
+
     path('', home_view, name="home"),
     path('pixelate/', pixelate_view, name="pixelate"),
     path('download/', download_view, name="download"),

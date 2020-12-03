@@ -5,11 +5,11 @@ from .forms import RegisterForm, CustomUserChangeForm
 from .models import CustomUser
 # Register your models here.
 
+# Custom admin model (because we are not using Django's default user)
 class CustomUserAdmin(UserAdmin):
     add_form = RegisterForm
     form = CustomUserChangeForm
     model = CustomUser
-    # list_display = [field.name for field in CustomUser._meta.get_fields() if field.]
     list_display = [
         'username',
         'password',
@@ -17,4 +17,5 @@ class CustomUserAdmin(UserAdmin):
         'last_search'
     ]
 
+# Register CustomUser and CustomAdmin for use in Admin page
 admin.site.register(CustomUser, CustomUserAdmin)

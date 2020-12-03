@@ -156,6 +156,11 @@ def home_view(request):
 	#get this from the user
 	bitsize = "64"
 	 
+	image_url = ImageGetter("beach").fetchImage()
+	print(image_url)
+	for x in range(100):
+		print("sssssssssssssssssssssssssssssssssssssssss")
+	#pixelatedImage = pixelate_image(image_url, bitsize)
 
 	
 		
@@ -245,3 +250,7 @@ def getPixelatedImage():
 		img = f.read()
     
 	return prefix + base64.b64encode(img).decode('utf-8')
+
+def search(request):
+	print("Hello world ")
+
