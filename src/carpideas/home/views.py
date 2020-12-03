@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404, HttpResponseRedirect
 from django.http import HttpResponse
+from django.core import serializers
 from accounts.models import CustomUser
 from .models import Quote
 from carpideas.imageGetter import ImageGetter
@@ -20,9 +21,11 @@ import base64, urllib
 import numpy as np
 import matplotlib.pyplot as plt
 from pathlib import Path
+from django.urls import reverse
 
+#wanted a stand in for persistant data, but this doesnt work
 class ImageClass:
-	def __init__(self, image='0'):
+	def __init__(self, image='1'):
 	   self._image = ImageGetter(image).fetchImage()
 
 	@property 
@@ -33,8 +36,47 @@ class ImageClass:
 	def GetImage(self, name):
 		self.__image = ImageGetter(name).fetchImage()
 
-
 image = ImageClass()
+
+# code for testing
+def cookie_session(request):
+    request.session.set_test_cookie()
+    return HttpResponse("<h1>dataflair</h1>")
+def cookie_delete(request):
+    if request.session.test_cookie_worked():
+        request.session.delete_test_cookie()
+        response = HttpResponse("dataflair<br> cookie created")
+    else:
+        response = HttpResponse("Dataflair <br> Your browser does not accept cookies")
+    return response
+
+def create_session(request):
+	request.session['name'] = 'username'
+	request.session['password'] = 'password123'
+	request.session['image'] = image._image
+	return HttpResponse("<h1>dataflair<br> the session is set</h1>")
+
+def access_session(request):
+	response = "<h1>Welcome to Sessions</h1><br>"
+	if request.session.get('image'):
+		response += "image : {0} <br>".format(request.session.get('image'))
+	if request.session.get('name'):
+		response += "Name : {0} <br>".format(request.session.get('name'))
+	
+	if request.session.get('password'):
+		response += "Password : {0} <br>".format(request.session.get('password'))
+		return HttpResponse(response)
+	else:
+		return redirect('create/')
+
+def delete_session(request):
+    try:
+        del request.session['name']
+        del request.session['password']
+    except KeyError:
+        pass
+    return HttpResponse("<h1>dataflair<br>Session Data cleared</h1>")
+# end - code for testing
 
 def download_view(request):
 
@@ -50,10 +92,13 @@ def download_view(request):
 
 	posts = Quote.objects.get(quoteID=randNum)
 
+	download_request = True
+
 	my_context = {
 	#    'username' : user.username
 		'image': image_url,
-		'quote': posts.quote
+		'quote': posts.quote,
+		'isDownload': download_request
 	}
 	
 	print('Beginning file download with urllib2...')
@@ -65,14 +110,13 @@ def download_view(request):
 	if not request.user.is_authenticated:
 		return redirect("login")
 	else:
-		return render(request, "home.html", my_context)
-
+		return HttpResponseRedirect(reverse('home'))
 
 def pixelate_view(request):
 	bitsize = "64"
 	#pixelatedImage = pixelate_image(image._image, bitsize)
-	#pixelatedImage = getPixelatedImage()
-	pixelatedImage = old_pixelate_image(image._image)
+	pixelatedImage = getPixelatedImage()
+	#pixelatedImage = old_pixelate_image(image._image)
 
 	my_context = {
 	#    'username' : user.username
@@ -86,11 +130,23 @@ def pixelate_view(request):
 
 def home_view(request):
 
-	global image
+	if request.session.get('image'):
+		image_url = request.session.get('image') #to-do: call setter
+		print('session worked ')
+		print(image_url)
+		print()
+	else:
+		request.session['image'] = image._image
+		image_url = request.session.get('image')
+		print('session created')
+		print()
+
 	#return HttpResponse("<h1>Hello World</h1>")
 	randNum = 0 # For testing purposes
 	# randNum = random.randint(0,16)
 	#user = User.objects.get(id=1)
+
+	download_request = False
 
 	posts = Quote.objects.get(quoteID=randNum)
 
@@ -100,7 +156,9 @@ def home_view(request):
 	#get this from the user
 	bitsize = "64"
 	 
-	image_url = image._image #to-do: call setter
+
+	
+		
 	#print(image_url)
 	
 	#user = User.objects.get(id=1)
@@ -109,7 +167,8 @@ def home_view(request):
 	my_context = {
 	#    'username' : user.username
 		'image': image_url,
-		'quote': posts.quote
+		'quote': posts.quote,
+		'isDownload': download_request
 	}
 	# Check if user is anonymous user
 	if not request.user.is_authenticated:
@@ -145,8 +204,6 @@ def old_pixelate_image(url):
 # this function takes a url for the image that wants to be pixelated
 # this function takes a bitsize for the number of bits it should be pixelated to
 def pixelate_image(image_url, bitsize):
-
-	
 
 	#sanitize bitsize for extra security against shell injection
 	bitsize = shlex.quote(bitsize)

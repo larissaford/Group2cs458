@@ -6,3 +6,14 @@
     <h3 style="color:white">Welcome, {{request.user}}</h3>
     
 {% endblock %}
+<script>
+    if ({{isDownload}}){
+        let userPreference
+
+        if (confirm("Do you want to download this background?") == true) {
+			userPreference = "Image downloaded!"
+		} else {
+			userPreference = "Download Canceled!"
+		}
+        alert(userPreference)
+    }
