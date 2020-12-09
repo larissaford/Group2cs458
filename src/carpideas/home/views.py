@@ -71,13 +71,21 @@ def delete_session(request):
 	return HttpResponse("<h1>dataflair<br>Session Data cleared</h1>")
 # end - code for testing
 
+# assumes that the image exists before downloading
+# downloads the currently viewed image stored in the session
 def download_view(request):
 
-	global image
+	path_to_download_folder = str(os.path.join(Path.home(), "Downloads", "image.png"))
+	print(path_to_download_folder)
+	print()
 
-	image_url = image._image
+	if request.session.get('currentImage'):
+			image_file = request.session.get('currentImage')
+	else:
+		print ("Image does not exist")
 
-	img_data = requests.get(image_url, auth=HTTPBasicAuth('user', 'pass')).content
+	#response = requests.get(image_url, auth=HTTPBasicAuth('user', 'pass')).content
+	image_url = getImageURI(image_file)
 
 	randNum = 0 # For testing purposes
 	# randNum = random.randint(0,16)
@@ -97,7 +105,9 @@ def download_view(request):
 	print('Beginning file download with urllib2...')
 	path_to_download_folder = str(os.path.join(Path.home(), "Downloads", "image.png"))
 
-	image = io.imread(image_url)
+	#print(path_to_download_folder)
+	image = io.imread(image_file)
+	#image = image_url
 	status = cv2.imwrite(path_to_download_folder, cv2.cvtColor(image, cv2.COLOR_BGR2RGB))
 	print("Image written to file-system at ",path_to_download_folder,": ", status)		
 	if not request.user.is_authenticated:
@@ -117,11 +127,15 @@ def pixelate_view(request):
 			image_url = request.session.get('image')
 			request.session['pixelized'] = pixelate_image(image_url, bitsize)
 			pixelatedImage = request.session.get('pixelized')
+
 			print('session created')
 			print()
 		else:
-			pixelatedImage = getImageURI("pixelated.png")
+			pixelatedImage = getImageURI(os.getcwd()+"\\home\\"+"pixelated.png")
 
+	#used for downloading the currently viewed image
+	request.session['currentImage'] = os.getcwd()+"\\home\\" + "pixelated.png"
+	
 	#pixelatedImage = pixelate_image(image._image, bitsize)
 	#pixelatedImage = getPixelatedImage()
 	#pixelatedImage = old_pixelate_image(image._image)
@@ -139,6 +153,11 @@ def pixelate_view(request):
 def home_view(request):
 
 	image_url = getImage(request, image)
+	request.session['currentImage'] = filename = os.getcwd()+"\\home\\" + "image.png"
+	print()
+	print (request.session.get('currentImage'))
+	print()
+
 		
 		#LARISSA TO-DO: make it so that pixelation runs in the background and home view runs without waiting,
 		# but clicking on the pixelate button still waits in case pixelation wasn't done yet. 
@@ -235,7 +254,7 @@ def pixelate_image(image_url, bitsize):
 		print()
 		return -1
 
-	return getImageURI("pixelated.png")
+	return getImageURI(os.getcwd()+"\\home\\"+"pixelated.png")
 
 def writeImageToFile(image_url, wd):
 	image = io.imread(image_url) #from the scikit-image package (the import statement skimage), makes the url into an image png file
@@ -245,6 +264,7 @@ def writeImageToFile(image_url, wd):
 	print()
 	print("Image written to file-system at ",wd,": ", status)
 
+# either gets the image or creates the image
 def getImage(request, image_url):
 	if request.session.get('image'):
 		image = request.session.get('image')
@@ -254,13 +274,13 @@ def getImage(request, image_url):
 	else:
 		wd = os.getcwd()+"\\home\\"
 		writeImageToFile(image_url, wd)
-		request.session['image'] = getImageURI("image.png")
+		request.session['image'] = getImageURI(wd+"image.png")
 		image = request.session.get('image')
-	
+
 	return image
 
-def getImageURI(imageName):
-	filename = os.getcwd()+"\\home\\" + imageName #uses the current working directory so that it works with others computers
+def getImageURI(filename):
+	#filename = os.getcwd()+"\\home\\" + imageName #uses the current working directory so that it works with others computers
 
 	ext = filename.split('.')[-1]
     
