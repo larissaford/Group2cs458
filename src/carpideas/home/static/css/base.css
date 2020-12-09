@@ -189,52 +189,79 @@ Start of analog clock below*/
   color: red;
 }
 
-  .clock::before { /*places the center of the clock*/
-    content: '';
-    width: 15px;
-    height: 15px;
-    border-radius: 50%;
-    background-color: rgb(32, 32, 32);
-    position: absolute;
-    top: 50%;
-    left: 51%;
-    transform: translate(-50%, -50%);
-    z-index: 999;
-  }
-  .hand {
-    /* apply the width */
-    /* apply the height */
-    /* apply the background-color */
-    position: absolute;
-    bottom: 50%;
-    left: 50%;
-    transform: translateX(-50%) rotate(90deg);
-    transform-origin: bottom;
-    border-top-left-radius: 7px;
-    border-top-right-radius: 7px;
-  }
-  /* hour hand style*/
-  .hour {
-    width: 7px;
-    height: 35%;
-    top: 15%;
-    background-color: rgb(32, 32, 32);
-  }
-  /* minute hand style */
-  .minute {
-    width: 5px;
-    height: 38%;
-    background-color:rgb(32, 32, 32);
-  }
-  /* second hand style */
-  .second {
-    position: absolute;
-    height: 45%;
-    width: 0.11em;
-    top: 5%;
-    transform-origin: 50% 100%;
-    background-color: #ff0000;
-  }
+.widgetBank {
+  position: absolute;
+}
+
+/* Widget Compenents */
+.widgetContainer {
+  margin: 0px auto;
+  padding-bottom: 1em;
+}
+
+.widget {
+  position: absolute;
+}
+
+.icon {
+  position: absolute;
+}
+
+.icon img {
+  max-width: 50px;
+  max-height: 50px;
+}
+
+iframe {
+  position: relative;
+}
+/* Analog Clock Widget Classes */
+.clock::before { /*places the center of the clock*/
+  content: '';
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  background-color: rgb(32, 32, 32);
+  position: absolute;
+  top: 50%;
+  left: 51%;
+  transform: translate(-50%, -50%);
+  z-index: 999;
+}
+.hand {
+  /* apply the width */
+  /* apply the height */
+  /* apply the background-color */
+  position: absolute;
+  bottom: 50%;
+  left: 50%;
+  transform: translateX(-50%) rotate(90deg);
+  transform-origin: bottom;
+  border-top-left-radius: 7px;
+  border-top-right-radius: 7px;
+}
+/* hour hand style*/
+.hour {
+  width: 7px;
+  height: 35%;
+  top: 15%;
+  background-color: rgb(32, 32, 32);
+}
+/* minute hand style */
+.minute {
+  width: 5px;
+  height: 38%;
+  background-color:rgb(32, 32, 32);
+}
+/* second hand style */
+.second {
+  position: absolute;
+  height: 45%;
+  width: 0.11em;
+  top: 5%;
+  transform-origin: 50% 100%;
+  background-color: #ff0000;
+}
 
   /*makes the face of the clock including tick marks*/
   .clock__numbers {

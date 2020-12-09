@@ -1,27 +1,32 @@
   <!--Analog clock-->
   {% load static %}
-  <div id="analog_clock" class = "format">
-      <div class="clock">
-        <div class="clock__numbers">
-            <!--creates the clock face-->
-            <div class = "number"></div>
-            <div class="numbers__hour"></div>
-            <div class="numbers__hour"></div>
-            <div class = "number"></div>
-            <div class="numbers__hour"></div>
-            <div class="numbers__hour"></div>
-            <div class = "number"></div>
-            <div class="numbers__hour"></div>
-            <div class="numbers__hour"></div>
-            <div class = "number"></div>
-            <div class="numbers__hour"></div>
-            <div class="numbers__hour"></div>
+  <div class="widgetContainer" draggable="true" ondragend="drop(event)">
+      <div id="analog_clock" class = "format">
+          <div class="clock widget">
+            <div class="clock__numbers">
+                <!--creates the clock face-->
+                <div class = "number"></div>
+                <div class="numbers__hour"></div>
+                <div class="numbers__hour"></div>
+                <div class = "number"></div>
+                <div class="numbers__hour"></div>
+                <div class="numbers__hour"></div>
+                <div class = "number"></div>
+                <div class="numbers__hour"></div>
+                <div class="numbers__hour"></div>
+                <div class = "number"></div>
+                <div class="numbers__hour"></div>
+                <div class="numbers__hour"></div>
+            </div>
+            <!--clock hands-->
+            <div class="hand hour"></div>
+            <div class="hand minute"></div>
+            <div class="hand second"></div>
         </div>
-        <!--clock hands-->
-        <div class="hand hour"></div>
-        <div class="hand minute"></div>
-        <div class="hand second"></div>
-    </div>
- </div>
+     </div>
+      <div class="icon">
+        <img src="{% static 'icons/clock_icon.jpg' %}"/>
+     </div>
+  </div>
   <!--link to js-->
      <script type = "text/javascript" src="{% static 'javascript/analog.js' %}"></script>
