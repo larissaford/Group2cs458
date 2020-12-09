@@ -28,10 +28,9 @@ from py._path.local import LocalPath
 
 
 #wanted a stand in for persistant data, but this doesnt work
-image = ImageGetter('0').fetchImage()
-
-pydantic.json.ENCODERS_BY_TYPE[pathlib.PosixPath] = str
-pydantic.json.ENCODERS_BY_TYPE[pathlib.WindowsPath] = str
+image = ImageGetter('puppies').fetchImage()
+print(image)
+print()
 
 class Path(pathlib.Path):
 
@@ -206,15 +205,6 @@ def home_view(request):
 
 	#get this from the user
 	bitsize = "64"
-	 
-	#image_url = "https://images.unsplash.com/photo-1604864708171-b6a408b4cba2?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1352&q=80"
-	#print(image_url)
-	#pixelatedImage = pixelate_image(image_url, bitsize)
-
-	
-		
-	#print(image_url)
-	
 	#user = User.objects.get(id=1)
 
 	#contains a key-value pair
@@ -306,17 +296,15 @@ def getImage(request, image_url):
 		print('setting new image')
 		wd = os.getcwd()+"\\home\\"
 		writeImageToFile(image_url, wd)
-		request.session['image'] = getImageURI(getFile(wd, "image.png"))
+		request.session['image'] = getImageURI(pathlib.Path(wd, "image.png"))
 		image = request.session.get('image')
 
 	return image
 
 def getImageURI(filename):
 	#filename = os.getcwd()+"\\home\\" + imageName #uses the current working directory so that it works with others computers
-
-	ext = filename.split('.')[-1]
     
-	prefix = f'data:image/{ext};base64,'
+	prefix = f'data:image/;base64,'
 	with open(filename, 'rb') as f:
 		img = f.read()
     
