@@ -22,12 +22,12 @@ class ImageGetter:
     def fetchImage(self):
 
         webpage = requests.get(self.URL)                                                                
-        imageURLs = re.findall(r'_2zEKz" (.*?)">', webpage.text)                                        # find URLs in HTML
+        imageURLs = re.findall(r'_2UpQX" (.*?)">', webpage.text)                                        # find URLs in HTML
         randNum = random.randint(0,len(imageURLs))                                                      
         
         if imageURLs:                                                                                   # make sure an image to display to the user was found
             imageStr = imageURLs[randNum]
-            imageURL = imageStr.split('srcSet="')[1].split('?ixlib=')[0]                                # clean up URL string
+            imageURL = imageStr.split('srcSet="')[1].split('?ixid=')[0]                                # clean up URL string
             return imageURL
         else:
             return 'https://source.unsplash.com/random/1920x1080'                                       # get a random image if no URL is found above
@@ -76,10 +76,10 @@ class ImageGetter:
 
 
 # uncomment the code below to test fetchImage (Ctrl + /)
-# ig = ImageGetter("fish")
-# url = ig.fetchImage()
-# print(url)
-# print("done")
+ig = ImageGetter("fish")
+url = ig.fetchImage()
+print(url)
+print("done")
 
 # uncomment the code below to test fetchAllImages  (Ctrl + /)
 # ig = ImageGetter("fish")
