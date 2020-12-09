@@ -24,19 +24,7 @@ from pathlib import Path
 from django.urls import reverse
 
 #wanted a stand in for persistant data, but this doesnt work
-class ImageClass:
-	def __init__(self, image='1'):
-	   self._image = ImageGetter(image).fetchImage()
-
-	@property 
-	def GetImage(self):
-		return self.__image
-
-	@GetImage.setter
-	def GetImage(self, name):
-		self.__image = ImageGetter(name).fetchImage()
-
-image = ImageClass()
+image = ImageGetter('0').fetchImage()
 
 # code for testing
 def cookie_session(request):
@@ -53,16 +41,19 @@ def cookie_delete(request):
 def create_session(request):
 	request.session['name'] = 'username'
 	request.session['password'] = 'password123'
-	request.session['image'] = image._image
+	print(image)
+	request.session['image'] = image
+	
 	return HttpResponse("<h1>dataflair<br> the session is set</h1>")
 
 def access_session(request):
 	response = "<h1>Welcome to Sessions</h1><br>"
-	if request.session.get('image'):
-		response += "image : {0} <br>".format(request.session.get('image'))
+	#if request.session.get('image'):
+		#response += "image : {0} <br>".format(request.session.get('image'))
 	if request.session.get('name'):
 		response += "Name : {0} <br>".format(request.session.get('name'))
-	
+	if request.session.get('pixelized'):
+		response += "Pixelated : {0} <br>".format(request.session.get('pixelized'))
 	if request.session.get('password'):
 		response += "Password : {0} <br>".format(request.session.get('password'))
 		return HttpResponse(response)
@@ -70,12 +61,14 @@ def access_session(request):
 		return redirect('create/')
 
 def delete_session(request):
-    try:
-        del request.session['name']
-        del request.session['password']
-    except KeyError:
-        pass
-    return HttpResponse("<h1>dataflair<br>Session Data cleared</h1>")
+	try:
+		del request.session['name']
+		del request.session['password']
+		del request.session['image']
+		del request.session['pixelized']
+	except KeyError:
+		pass
+	return HttpResponse("<h1>dataflair<br>Session Data cleared</h1>")
 # end - code for testing
 
 def download_view(request):
@@ -114,8 +107,23 @@ def download_view(request):
 
 def pixelate_view(request):
 	bitsize = "64"
+	if request.session.get('pixelized'):
+		pixelatedImage = request.session.get('pixelized')
+		print('session worked ')
+		print()
+	else:
+		#To-do: make this not hard coded
+		if request.session.get('image'):
+			image_url = request.session.get('image')
+			request.session['pixelized'] = pixelate_image(image_url, bitsize)
+			pixelatedImage = request.session.get('pixelized')
+			print('session created')
+			print()
+		else:
+			pixelatedImage = getImageURI("pixelated.png")
+
 	#pixelatedImage = pixelate_image(image._image, bitsize)
-	pixelatedImage = getPixelatedImage()
+	#pixelatedImage = getPixelatedImage()
 	#pixelatedImage = old_pixelate_image(image._image)
 
 	my_context = {
@@ -130,17 +138,11 @@ def pixelate_view(request):
 
 def home_view(request):
 
-	if request.session.get('image'):
-		image_url = request.session.get('image') #to-do: call setter
-		print('session worked ')
-		print(image_url)
-		print()
-	else:
-		request.session['image'] = image._image
-		image_url = request.session.get('image')
-		print('session created')
-		print()
-
+	image_url = getImage(request, image)
+		
+		#LARISSA TO-DO: make it so that pixelation runs in the background and home view runs without waiting,
+		# but clicking on the pixelate button still waits in case pixelation wasn't done yet. 
+		
 	#return HttpResponse("<h1>Hello World</h1>")
 	randNum = 0 # For testing purposes
 	# randNum = random.randint(0,16)
@@ -150,16 +152,13 @@ def home_view(request):
 
 	posts = Quote.objects.get(quoteID=randNum)
 
-	#LARISSA TO-DO: make it so that pixelation runs in the background and home view runs without waiting,
-	# but clicking on the pixelate button still waits in case pixelation wasn't done yet. 
+	
 
 	#get this from the user
 	bitsize = "64"
 	 
-	image_url = ImageGetter("beach").fetchImage()
-	print(image_url)
-	for x in range(100):
-		print("sssssssssssssssssssssssssssssssssssssssss")
+	#image_url = "https://images.unsplash.com/photo-1604864708171-b6a408b4cba2?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1352&q=80"
+	#print(image_url)
 	#pixelatedImage = pixelate_image(image_url, bitsize)
 
 	
@@ -210,20 +209,18 @@ def old_pixelate_image(url):
 # this function takes a bitsize for the number of bits it should be pixelated to
 def pixelate_image(image_url, bitsize):
 
-	#sanitize bitsize for extra security against shell injection
-	bitsize = shlex.quote(bitsize)
 	wd = os.getcwd()+"\\home\\" #uses the current working directory so that it works with others computers
 
-	if os.path.exists(wd+"pixelated.png"):
-		os.remove(wd+"pixelated.png")
+	#if os.path.exists(wd+"pixelated.png"):
+	#	os.remove(wd+"pixelated.png")
 
-	image = io.imread(image_url) #from the scikit-image package (the import statement skimage), makes the url into an image png file
-	status = cv2.imwrite(wd+"image.png", cv2.cvtColor(image, cv2.COLOR_BGR2RGB)) #writes the image png file into the file system as image.png
-
-	#testing that the image was written to the file system under the home folder
-	print()
-	print("Image written to file-system at ",wd,": ", status)
+	#sanitize bitsize for extra security against shell injection
+	bitsize = shlex.quote(bitsize)
+	#print(image_url)
+	#add a check to see if the image has already been written
 	
+	#writeImageToFile(image_url, wd)
+
 	#pixelation through PyPXL, needs a png file
 	#uses bitsize to determine the bitsize of the image
 	#subprocess uses multithreading
@@ -238,10 +235,32 @@ def pixelate_image(image_url, bitsize):
 		print()
 		return -1
 
-	return getPixelatedImage()
+	return getImageURI("pixelated.png")
 
-def getPixelatedImage():
-	filename = os.getcwd()+"\\home\\" + "pixelated.png" #uses the current working directory so that it works with others computers
+def writeImageToFile(image_url, wd):
+	image = io.imread(image_url) #from the scikit-image package (the import statement skimage), makes the url into an image png file
+	status = cv2.imwrite(wd+"image.png", cv2.cvtColor(image, cv2.COLOR_BGR2RGB)) #writes the image png file into the file system as image.png
+
+	#testing that the image was written to the file system under the home folder
+	print()
+	print("Image written to file-system at ",wd,": ", status)
+
+def getImage(request, image_url):
+	if request.session.get('image'):
+		image = request.session.get('image')
+		print('session worked ')
+		#print(image)
+		print()
+	else:
+		wd = os.getcwd()+"\\home\\"
+		writeImageToFile(image_url, wd)
+		request.session['image'] = getImageURI("image.png")
+		image = request.session.get('image')
+	
+	return image
+
+def getImageURI(imageName):
+	filename = os.getcwd()+"\\home\\" + imageName #uses the current working directory so that it works with others computers
 
 	ext = filename.split('.')[-1]
     
