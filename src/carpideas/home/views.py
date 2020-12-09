@@ -20,16 +20,40 @@ import shlex
 import base64, urllib
 import numpy as np
 import matplotlib.pyplot as plt
+import pathlib
+import pydantic.json
 from pathlib import Path
 from django.urls import reverse
+from py._path.local import LocalPath
+
 
 #wanted a stand in for persistant data, but this doesnt work
 image = ImageGetter('0').fetchImage()
+
+pydantic.json.ENCODERS_BY_TYPE[pathlib.PosixPath] = str
+pydantic.json.ENCODERS_BY_TYPE[pathlib.WindowsPath] = str
+
+class Path(pathlib.Path):
+
+    def __new__(cls, *args, **kwargs):
+        if cls is Path:
+            cls = WindowsPath if os.name == 'nt' else PosixPath
+        return cls._from_parts(map(str, args))
+
+    def __truediv__(self, other):
+        return super().__truediv__(str(other))
+
+class WindowsPath(Path, pathlib.WindowsPath):
+    pass
+class PosixPath(Path, pathlib.PosixPath):
+    pass
 
 # code for testing
 def cookie_session(request):
     request.session.set_test_cookie()
     return HttpResponse("<h1>dataflair</h1>")
+
+# code for testing
 def cookie_delete(request):
     if request.session.test_cookie_worked():
         request.session.delete_test_cookie()
@@ -38,6 +62,7 @@ def cookie_delete(request):
         response = HttpResponse("Dataflair <br> Your browser does not accept cookies")
     return response
 
+# code for testing
 def create_session(request):
 	request.session['name'] = 'username'
 	request.session['password'] = 'password123'
@@ -46,6 +71,7 @@ def create_session(request):
 	
 	return HttpResponse("<h1>dataflair<br> the session is set</h1>")
 
+# code for testing
 def access_session(request):
 	response = "<h1>Welcome to Sessions</h1><br>"
 	#if request.session.get('image'):
@@ -56,20 +82,25 @@ def access_session(request):
 		response += "Pixelated : {0} <br>".format(request.session.get('pixelized'))
 	if request.session.get('password'):
 		response += "Password : {0} <br>".format(request.session.get('password'))
-		return HttpResponse(response)
-	else:
-		return redirect('create/')
+	if request.session.get('currentImage'):
+		response += "Current Image File : {0} <br>".format(request.session.get('currentImage'))
+		#return HttpResponse(response)
+	#else:
+	#	return redirect('create/')
+	return HttpResponse(response)
 
+#code for testing
 def delete_session(request):
 	try:
 		del request.session['name']
 		del request.session['password']
 		del request.session['image']
 		del request.session['pixelized']
+		del request.session['currentImage']
+
 	except KeyError:
 		pass
 	return HttpResponse("<h1>dataflair<br>Session Data cleared</h1>")
-# end - code for testing
 
 # assumes that the image exists before downloading
 # downloads the currently viewed image stored in the session
@@ -80,36 +111,36 @@ def download_view(request):
 	print()
 
 	if request.session.get('currentImage'):
-			image_file = request.session.get('currentImage')
+		image_file = request.session.get('currentImage')
+		image_url = getImageURI(image_file)
+
+		randNum = 0 # For testing purposes
+		# randNum = random.randint(0,16)
+		#user = User.objects.get(id=1)
+
+		posts = Quote.objects.get(quoteID=randNum)
+
+		download_request = True
+
+		my_context = {
+		#    'username' : user.username
+			'image': image_url,
+			'quote': posts.quote,
+			'isDownload': download_request
+		}
+		
+		print('Beginning file download with urllib2...')
+		path_to_download_folder = str(os.path.join(Path.home(), "Downloads", "image.png"))
+
+		#print(path_to_download_folder)
+		image = io.imread(image_file)
+		#image = image_url
+		status = cv2.imwrite(path_to_download_folder, cv2.cvtColor(image, cv2.COLOR_BGR2RGB))
+		print("Image written to file-system at ",path_to_download_folder,": ", status)	
+
 	else:
 		print ("Image does not exist")
-
-	#response = requests.get(image_url, auth=HTTPBasicAuth('user', 'pass')).content
-	image_url = getImageURI(image_file)
-
-	randNum = 0 # For testing purposes
-	# randNum = random.randint(0,16)
-	#user = User.objects.get(id=1)
-
-	posts = Quote.objects.get(quoteID=randNum)
-
-	download_request = True
-
-	my_context = {
-	#    'username' : user.username
-		'image': image_url,
-		'quote': posts.quote,
-		'isDownload': download_request
-	}
 	
-	print('Beginning file download with urllib2...')
-	path_to_download_folder = str(os.path.join(Path.home(), "Downloads", "image.png"))
-
-	#print(path_to_download_folder)
-	image = io.imread(image_file)
-	#image = image_url
-	status = cv2.imwrite(path_to_download_folder, cv2.cvtColor(image, cv2.COLOR_BGR2RGB))
-	print("Image written to file-system at ",path_to_download_folder,": ", status)		
 	if not request.user.is_authenticated:
 		return redirect("login")
 	else:
@@ -131,10 +162,10 @@ def pixelate_view(request):
 			print('session created')
 			print()
 		else:
-			pixelatedImage = getImageURI(os.getcwd()+"\\home\\"+"pixelated.png")
+			pixelatedImage = getImageURI(getFile(os.getcwd()+"\\home\\","pixelated.png"))
 
 	#used for downloading the currently viewed image
-	request.session['currentImage'] = os.getcwd()+"\\home\\" + "pixelated.png"
+	request.session['currentImage'] = getFile(os.getcwd()+"\\home\\", "pixelated.png")
 	
 	#pixelatedImage = pixelate_image(image._image, bitsize)
 	#pixelatedImage = getPixelatedImage()
@@ -153,7 +184,7 @@ def pixelate_view(request):
 def home_view(request):
 
 	image_url = getImage(request, image)
-	request.session['currentImage'] = filename = os.getcwd()+"\\home\\" + "image.png"
+	request.session['currentImage'] = getFile( os.getcwd()+"\\home\\" , "image.png")
 	print()
 	print (request.session.get('currentImage'))
 	print()
@@ -254,7 +285,7 @@ def pixelate_image(image_url, bitsize):
 		print()
 		return -1
 
-	return getImageURI(os.getcwd()+"\\home\\"+"pixelated.png")
+	return getImageURI(getFile(os.getcwd()+"\\home\\","pixelated.png"))
 
 def writeImageToFile(image_url, wd):
 	image = io.imread(image_url) #from the scikit-image package (the import statement skimage), makes the url into an image png file
@@ -272,9 +303,10 @@ def getImage(request, image_url):
 		#print(image)
 		print()
 	else:
+		print('setting new image')
 		wd = os.getcwd()+"\\home\\"
 		writeImageToFile(image_url, wd)
-		request.session['image'] = getImageURI(wd+"image.png")
+		request.session['image'] = getImageURI(getFile(wd, "image.png"))
 		image = request.session.get('image')
 
 	return image
@@ -293,3 +325,5 @@ def getImageURI(filename):
 def search(request):
 	print("Hello world ")
 
+def getFile(filePath, filename):
+	pathlib.Path(filePath, filename)
