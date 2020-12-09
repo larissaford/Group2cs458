@@ -37,10 +37,7 @@ def home_view(request):
 	#get this from the user
 	bitsize = "64"
 	 
-	image_url = ImageGetter("beach").fetchImage()
-	print(image_url)
-	for x in range(100):
-		print("sssssssssssssssssssssssssssssssssssssssss")
+	image_url = ImageGetter("shore").fetchImage()
 	pixelatedImage = pixelate_image(image_url, bitsize)
 
 	#user = User.objects.get(id=1)
