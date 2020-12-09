@@ -25,6 +25,7 @@ import pydantic.json
 from pathlib import Path
 from django.urls import reverse
 from py._path.local import LocalPath
+from ftplib import FTP
 
 
 #wanted a stand in for persistant data, but this doesnt work
@@ -156,6 +157,10 @@ def pixelate_view(request):
 		if request.session.get('image'):
 			image_url = request.session.get('image')
 			request.session['pixelized'] = pixelate_image(image_url, bitsize)
+
+			#for testing when the image has already been pixelized
+			#request.session['pixelized'] = getImageURI(pathlib.Path(os.getcwd()+"\\home\\","pixelated.png"))
+			
 			pixelatedImage = request.session.get('pixelized')
 
 			print('session created')
@@ -303,15 +308,16 @@ def getImage(request, image_url):
 
 def getImageURI(filename):
 	#filename = os.getcwd()+"\\home\\" + imageName #uses the current working directory so that it works with others computers
-    
-	prefix = f'data:image/;base64,'
+	print (filename)
+	print()
+	prefix = "data:image/;base64,"
 	with open(filename, 'rb') as f:
 		img = f.read()
-    
+	
 	return prefix + base64.b64encode(img).decode('utf-8')
 
 def search(request):
 	print("Hello world ")
 
 def getFile(filePath, filename):
-	pathlib.Path(filePath, filename)
+	str(pathlib.Path(filePath, filename))
