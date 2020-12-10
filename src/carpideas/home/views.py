@@ -166,10 +166,10 @@ def pixelate_view(request):
 			print('session created')
 			print()
 		else:
-			pixelatedImage = getImageURI(pathlib.Path(os.getcwd()+"\\home\\","pixelated.png"))
+			pixelatedImage = getImageURI(getFile(os.getcwd()+"\\home\\","pixelated.png"))
 
 	#used for downloading the currently viewed image
-	request.session['currentImage'] = pathlib.Path(os.getcwd()+"\\home\\", "pixelated.png")
+	request.session['currentImage'] = getFile(os.getcwd()+"\\home\\", "pixelated.png")
 	
 	#pixelatedImage = pixelate_image(image._image, bitsize)
 	#pixelatedImage = getPixelatedImage()
@@ -188,7 +188,7 @@ def pixelate_view(request):
 def home_view(request):
 
 	image_url = getImage(request, image)
-	#request.session['currentImage'] = pathlib.Path( os.getcwd()+"\\home\\" , "image.png")
+	request.session['currentImage'] = getFile( os.getcwd()+"\\home\\" , "image.png")
 	print()
 	print (request.session.get('currentImage'))
 	print()
@@ -280,7 +280,7 @@ def pixelate_image(image_url, bitsize):
 		print()
 		return -1
 
-	return getImageURI(pathlib.Path(os.getcwd()+"\\home\\","pixelated.png"))
+	return getImageURI(getFile(os.getcwd()+"\\home\\","pixelated.png"))
 
 def writeImageToFile(image_url, wd):
 	image = io.imread(image_url) #from the scikit-image package (the import statement skimage), makes the url into an image png file
@@ -320,4 +320,4 @@ def search(request):
 	print("Hello world ")
 
 def getFile(filePath, filename):
-	str(pathlib.Path(filePath, filename))
+	return str(pathlib.Path(filePath, filename))
