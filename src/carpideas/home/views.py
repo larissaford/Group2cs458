@@ -154,11 +154,11 @@ def pixelate_view(request):
 		if request.session.get('image'):
 			image_url = request.session.get('image')
 			
-			#for testing, comment this and uncomment below if pixelation has already completed
-			#request.session['pixelized'] = pixelate_image(image_url, bitsize)
+			#comment this out for testing and uncomment below if pixelation has already completed
+			request.session['pixelized'] = pixelate_image(image_url, bitsize)
 
 			#uncomment this for testing
-			request.session['pixelized'] = getImageURI(pathlib.Path(os.getcwd(),"home","pixelated.png"))
+			#request.session['pixelized'] = getImageURI(pathlib.Path(os.getcwd(),"home","pixelated.png"))
 			
 			pixelatedImage = request.session.get('pixelized')
 
