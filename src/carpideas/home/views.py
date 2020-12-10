@@ -28,11 +28,6 @@ from py._path.local import LocalPath
 from ftplib import FTP
 
 
-#wanted a stand in for persistant data, but this doesnt work
-image = ImageGetter('puppies').fetchImage()
-print(image)
-print()
-
 class Path(pathlib.Path):
 
     def __new__(cls, *args, **kwargs):
@@ -78,6 +73,8 @@ def access_session(request):
 		#response += "image : {0} <br>".format(request.session.get('image'))
 	if request.session.get('name'):
 		response += "Name : {0} <br>".format(request.session.get('name'))
+	if request.session.get('image'):
+		response += "Image : {0} <br>".format(request.session.get('image'))
 	if request.session.get('pixelized'):
 		response += "Pixelated : {0} <br>".format(request.session.get('pixelized'))
 	if request.session.get('password'):
@@ -156,20 +153,22 @@ def pixelate_view(request):
 		#To-do: make this not hard coded
 		if request.session.get('image'):
 			image_url = request.session.get('image')
-			request.session['pixelized'] = pixelate_image(image_url, bitsize)
+			
+			#for testing, comment this and uncomment below if pixelation has already completed
+			#request.session['pixelized'] = pixelate_image(image_url, bitsize)
 
-			#for testing when the image has already been pixelized
-			#request.session['pixelized'] = getImageURI(pathlib.Path(os.getcwd()+"\\home\\","pixelated.png"))
+			#uncomment this for testing
+			request.session['pixelized'] = getImageURI(pathlib.Path(os.getcwd(),"home","pixelated.png"))
 			
 			pixelatedImage = request.session.get('pixelized')
 
 			print('session created')
 			print()
 		else:
-			pixelatedImage = getImageURI(getFile(os.getcwd()+"\\home\\","pixelated.png"))
+			pixelatedImage = getImageURI(str(pathlib.Path(os.getcwd(),"home","pixelated.png")))
 
 	#used for downloading the currently viewed image
-	request.session['currentImage'] = getFile(os.getcwd()+"\\home\\", "pixelated.png")
+	request.session['currentImage'] = str(pathlib.Path(os.getcwd(),"home","pixelated.png"))
 	
 	#pixelatedImage = pixelate_image(image._image, bitsize)
 	#pixelatedImage = getPixelatedImage()
@@ -188,14 +187,14 @@ def pixelate_view(request):
 def home_view(request):
 
 	image_url = getImage(request, image)
-	request.session['currentImage'] = getFile( os.getcwd()+"\\home\\" , "image.png")
+	request.session['currentImage'] = str(pathlib.Path(os.getcwd(),"home", "image.png"))
 	print()
 	print (request.session.get('currentImage'))
 	print()
 
 		
-		#LARISSA TO-DO: make it so that pixelation runs in the background and home view runs without waiting,
-		# but clicking on the pixelate button still waits in case pixelation wasn't done yet. 
+	#LARISSA TO-DO: make it so that pixelation runs in the background and home view runs without waiting,
+	# but clicking on the pixelate button still waits in case pixelation wasn't done yet. 
 		
 	#return HttpResponse("<h1>Hello World</h1>")
 	randNum = 0 # For testing purposes
@@ -252,24 +251,22 @@ def old_pixelate_image(url):
 # this function returns a URI that is used for displaying the pixelated image
 # this function takes a url for the image that wants to be pixelated
 # this function takes a bitsize for the number of bits it should be pixelated to
+# this function assumes that an image has already been loaded
 def pixelate_image(image_url, bitsize):
 
-	wd = os.getcwd()+"\\home\\" #uses the current working directory so that it works with others computers
-
-	#if os.path.exists(wd+"pixelated.png"):
-	#	os.remove(wd+"pixelated.png")
+	#wd = str(pathlib.Path(os.getcwd(),"home")) #uses the current working directory so that it works with others computers
 
 	#sanitize bitsize for extra security against shell injection
 	bitsize = shlex.quote(bitsize)
-	#print(image_url)
-	#add a check to see if the image has already been written
 	
-	#writeImageToFile(image_url, wd)
+	path_Pypxl = str(pathlib.Path(os.getcwd(), "home", "pypxl_image.py"))
+	path_image = str(pathlib.Path(os.getcwd(), "home", "image.png"))
+	path_pixel = str(pathlib.Path(os.getcwd(), "home", "pixelated.png"))
 
 	#pixelation through PyPXL, needs a png file
 	#uses bitsize to determine the bitsize of the image
 	#subprocess uses multithreading
-	bashCommandForPixelation = "python "+wd+"pypxl_image.py -s "+bitsize+" "+bitsize+" "+wd+"image.png "+wd+"pixelated.png" 
+	bashCommandForPixelation = "python "+path_Pypxl+" -s "+bitsize+" "+bitsize+" "+path_image+" "+path_pixel 
 	print(bashCommandForPixelation)
 	print()
 	#test whether the subprocess works or returns an error
@@ -280,36 +277,37 @@ def pixelate_image(image_url, bitsize):
 		print()
 		return -1
 
-	return getImageURI(getFile(os.getcwd()+"\\home\\","pixelated.png"))
-
-def writeImageToFile(image_url, wd):
-	image = io.imread(image_url) #from the scikit-image package (the import statement skimage), makes the url into an image png file
-	status = cv2.imwrite(wd+"image.png", cv2.cvtColor(image, cv2.COLOR_BGR2RGB)) #writes the image png file into the file system as image.png
-
-	#testing that the image was written to the file system under the home folder
-	print()
-	print("Image written to file-system at ",wd,": ", status)
+	return getImageURI(pathlib.Path(os.getcwd(),"home","pixelated.png"))
 
 # either gets the image or creates the image
 def getImage(request, image_url):
+	print("getImage called")
 	if request.session.get('image'):
+		#print("session found")
 		image = request.session.get('image')
 		print('session worked ')
 		#print(image)
 		print()
 	else:
 		print('setting new image')
-		wd = os.getcwd()+"\\home\\"
-		writeImageToFile(image_url, wd)
-		request.session['image'] = getImageURI(pathlib.Path(wd, "image.png"))
+		#get image
+		image = ImageGetter('puppies').fetchImage()
+		#write image to file
+		image = io.imread(image_url) #from the scikit-image package (the import statement skimage), makes the url into an image png file
+		status = cv2.imwrite(str(pathlib.Path(os.getcwd(),"home","image.png")), cv2.cvtColor(image, cv2.COLOR_BGR2RGB)) #writes the image png file into the file system as image.png
+
+		#testing that the image was written to the file system under the home folder
+		print()
+		print("Image written to file-system: ", status)
+
+		request.session['image'] = getImageURI(pathlib.Path(os.getcwd(),"home", "image.png"))
 		image = request.session.get('image')
 
 	return image
 
 def getImageURI(filename):
-	#filename = os.getcwd()+"\\home\\" + imageName #uses the current working directory so that it works with others computers
-	print (filename)
-	print()
+	#print (filename)
+	#print()
 	prefix = "data:image/;base64,"
 	with open(filename, 'rb') as f:
 		img = f.read()
