@@ -14,12 +14,15 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.conf import settings
+from django.urls import path, include
+from django.conf.urls.static import static
+from django.conf.urls.i18n import i18n_patterns
 from accounts.tokens import account_activation_token
 
 from django.contrib.auth import views as auth_views
 from accounts.views import activate_view, password_reset_view, register_view
-from home.views import home_view, pixelate_image
+from home.views import home_view, pixelate_view, download_view, cookie_session, cookie_delete, create_session, access_session, delete_session
 
 
 urlpatterns = [
@@ -51,5 +54,17 @@ urlpatterns = [
 
 
     path('', home_view, name="home"),
-    
+    path('pixelate/', pixelate_view, name="pixelate"),
+    path('download/', download_view, name="download"),
+    path('testcookie/', cookie_session),
+    path('deletecookie/', cookie_delete),
+    path('create/', create_session),
+    path('access', access_session),
+    path('delete/', delete_session)
+
+    #testing
+    #path('', include('image.urls')),
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
