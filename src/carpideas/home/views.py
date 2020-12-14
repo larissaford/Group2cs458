@@ -4,6 +4,7 @@ from django.core import serializers
 from accounts.models import CustomUser
 from .models import Quote
 from carpideas.imageGetter import ImageGetter
+from django.views.static import serve
 
 from requests.auth import HTTPBasicAuth
 
@@ -120,23 +121,21 @@ def download_view(request):
 
 		posts = Quote.objects.get(quoteID=randNum)
 
-		download_request = True
-
 		my_context = {
 		#    'username' : user.username
 			'image': image_url,
 			'quote': posts.quote,
-			'isDownload': download_request
+			'isDownload': True
 		}
 		
-		print('Beginning file download with urllib2...')
-		path_to_download_folder = str(os.path.join(Path.home(), "Downloads", "image.png"))
+		# print('Beginning file download with urllib2...')
+		# path_to_download_folder = str(os.path.join(Path.home(), "Downloads", "image.png"))
 
-		#print(path_to_download_folder)
-		image = io.imread(image_file)
-		#image = image_url
-		status = cv2.imwrite(path_to_download_folder, cv2.cvtColor(image, cv2.COLOR_BGR2RGB))
-		print("Image written to file-system at ",path_to_download_folder,": ", status)	
+		# #print(path_to_download_folder)
+		# image = io.imread(image_file)
+		# #image = image_url
+		# status = cv2.imwrite(path_to_download_folder, cv2.cvtColor(image, cv2.COLOR_BGR2RGB))
+		# print("Image written to file-system at ",path_to_download_folder,": ", status)	
 
 	else:
 		print ("Image does not exist")
@@ -144,7 +143,7 @@ def download_view(request):
 	if not request.user.is_authenticated:
 		return redirect("login")
 	else:
-		return HttpResponseRedirect(reverse('home'))
+		return serve(request, os.path.basename(path_to_download_folder), os.path.dirname(image_file))
 
 def pixelate_view(request):
 	bitsize = "64"
@@ -202,8 +201,6 @@ def home_view(request):
 	# randNum = random.randint(0,16)
 	#user = User.objects.get(id=1)
 
-	download_request = False
-
 	posts = Quote.objects.get(quoteID=randNum)
 
 	
@@ -217,7 +214,7 @@ def home_view(request):
 	#    'username' : user.username
 		'image': image_url,
 		'quote': posts.quote,
-		'isDownload': download_request
+		'isDownload': False
 	}
 	# Check if user is anonymous user
 	if not request.user.is_authenticated:
