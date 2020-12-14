@@ -156,8 +156,7 @@ def pixelate_view(request):
 			#uncomment this for testing
 			#request.session['pixelized'] = getImageURI(pathlib.Path(os.getcwd(),"home","pixelated.png"))	
 		else:
-			#relies on an image already having been pixelized, may return an error
-			try:
+			try: #relies on an image already having been pixelized, may return an error
 				pixelatedImageFile = str(pathlib.Path(os.getcwd(),"home","pixelated.png"))
 				pixelatedImage = getImageURI(pixelatedImageFile)
 				#used for downloading the currently viewed image
@@ -165,7 +164,7 @@ def pixelate_view(request):
 			except:
 				print("image needs to be set first. load home page and try again.")
 
-	#for testing pixelation functions:
+	# for testing pixelation functions:
 	#pixelatedImage = pixelate_image(image._image, bitsize)
 	#pixelatedImage = getPixelatedImage()
 	#pixelatedImage = old_pixelate_image(image._image)
@@ -185,9 +184,6 @@ def home_view(request):
 
 	#set current image for downloading the current image
 	request.session['currentImage'] = str(pathlib.Path(os.getcwd(),"home", "image.png"))
-		
-	#LARISSA TO-DO: make it so that pixelation runs in the background and home view runs without waiting,
-	# but clicking on the pixelate button still waits in case pixelation wasn't done yet. 
 		
 	randNum = 0 # For testing purposes
 	posts = Quote.objects.get(quoteID=randNum)
@@ -239,24 +235,18 @@ def old_pixelate_image(url):
 # this function assumes that an image has already been loaded to the file system in the current working directory's home folder
 def pixelate_image(image_url, bitsize):
 
-	#pixelation through PyPXL, takes an image file and puts the result in a pixelized image file
-
-	#bitsize for the size of the pixelation (i.e. 16x16 or making a 16 bit image)
-	#sanitize bitsize for extra security against shell injection because shell=True with the subprocess call
-	bitsize = shlex.quote(bitsize)
-	#the python program for pixelizing the image
-	path_Pypxl = str(pathlib.Path(os.getcwd(), "home", "pypxl_image.py"))
-	#the image being pixelized
-	path_image = str(pathlib.Path(os.getcwd(), "home", "image.png"))
-	#where the pixelized result is put
-	path_pixel = str(pathlib.Path(os.getcwd(), "home", "pixelated.png"))
+	#arguments for pixelation through PyPXL, which takes an image file and puts the result in a pixelized image file
+	# for bitsize, sanitize bitsize for extra security against shell injection because shell=True with the subprocess call
+	bitsize = shlex.quote(bitsize) 											#bitsize for the size of the pixelation (i.e. 16x16 or making a 16 bit image)	
+	path_Pypxl = str(pathlib.Path(os.getcwd(), "home", "pypxl_image.py")) 	#the python program for pixelizing the image
+	path_image = str(pathlib.Path(os.getcwd(), "home", "image.png")) 		#the image being pixelized
+	path_pixel = str(pathlib.Path(os.getcwd(), "home", "pixelated.png"))	#where the pixelized result is put
 
 	#subprocess uses multithreading
 	bashCommandForPixelation = "python "+path_Pypxl+" -s "+bitsize+" "+bitsize+" "+path_image+" "+path_pixel 
 	print(bashCommandForPixelation)
 	print()
-	#test whether the subprocess works or returns an error
-	try:
+	try: #test whether the subprocess works or returns an error
 		process = subprocess.check_call(bashCommandForPixelation.split(),shell=True)
 	except subprocess.CalledProcessError:
 		print("Pixelation failed")
@@ -281,8 +271,12 @@ def getImage(request):
 		print("Image written to file-system: ", status)
 
 		#set image in session
-		request.session['image'] = getImageURI(pathlib.Path(os.getcwd(),"home", "image.png"))
-		image = request.session.get('image')
+		image = getImageURI(pathlib.Path(os.getcwd(),"home", "image.png"))
+		request.session['image'] = image
+
+		#LARISSA TO-DO: using multithreading, make it so that pixelation runs in the background and home view runs without waiting,
+		# but clicking on the pixelate button still waits in case pixelation wasn't done yet. 
+		
 
 	return image
 
