@@ -76,10 +76,10 @@ class ImageGetter:
 
 
 # uncomment the code below to test fetchImage (Ctrl + /)
-ig = ImageGetter("fish")
-url = ig.fetchImage()
-print(url)
-print("done")
+# ig = ImageGetter("fish")
+# url = ig.fetchImage()
+# print(url)
+# print("done")
 
 # uncomment the code below to test fetchAllImages  (Ctrl + /)
 # ig = ImageGetter("fish")
