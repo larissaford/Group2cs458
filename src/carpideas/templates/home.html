@@ -5,12 +5,14 @@
 <body id="image" ondragover="allowDrop(event)" style="background: url({{image}}) no-repeat center fixed; background-size: cover";>
     {% include 'navbar.html' %}
     <h3 style="color:white">Welcome, {{request.user}}</h3>
-    <!--    Widget Bank Widgets -->
+    <!--    Widget Bank Widgets  -->
     {% include 'widgets/analog_clock_widget.html' %}
     {% include 'widgets/spotify_widget.html' %}
     <!--    Widget Bank Needs to be Last-->
-    {% include 'widgets/quote_widget.html' %}
     {% include 'widget_bank.html' %}
-    
+    <!--  Quotes are Special. They can be outside  -->
+    {% include 'widgets/quote_widget.html' %}
+
     {% include 'options.html' with isPixelate=isPixelate %}
+</body>
 {% endblock %}
