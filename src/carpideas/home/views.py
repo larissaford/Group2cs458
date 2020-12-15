@@ -145,14 +145,18 @@ def pixelate_view(request):
 		pixelatedImage = request.session.get('pixelized')
 		print('pixelized image was stored in session')
 		print()
+		pixelatedImageFile = str(pathlib.Path(os.getcwd(),"home","pixelated.png"))
+		request.session['currentImage'] = pixelatedImageFile
 	else:
 		if request.session.get('image'):
 			print("image found in session for pixelation. pixelation starting now")
 			image_url = request.session.get('image')
 			
 			pixelatedImage = pixelate_image(image_url, bitsize)
+			pixelatedImageFile = str(pathlib.Path(os.getcwd(),"home","pixelated.png"))
 			#comment this out for testing and uncomment below if pixelation has already completed
 			request.session['pixelized'] = pixelatedImage
+			request.session['currentImage'] = pixelatedImageFile
 			#uncomment this for testing
 			#request.session['pixelized'] = getImageURI(pathlib.Path(os.getcwd(),"home","pixelated.png"))	
 		else:
