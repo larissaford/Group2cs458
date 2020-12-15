@@ -55,7 +55,6 @@ urlpatterns = [
 
     path('', home_view, name="home"),
     path('pixelate/', pixelate_view, name="pixelate"),
-    path('download/', download_view, name="download"),
     path('testcookie/', cookie_session),
     path('deletecookie/', cookie_delete),
     path('create/', create_session),
