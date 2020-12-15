@@ -4,22 +4,24 @@
 
     <body id="image" style="background: url({{image}}) no-repeat center fixed; background-size: cover";>
     <h3 style="color:white">Welcome, {{request.user}}</h3>
-    {% include 'navbar.html' %}
     {% include 'widgets/analog_clock_widget.html' %}
     {% include 'widgets/spotify_widget.html' %}
     <!--    Widget Bank Needs to be Last-->
     {% include 'widget_bank.html' %}
     <button onclick="activateBank()">Widget Bank</button>
-{% endblock %}
-<script>
-    if ({{isDownload}}) {
-        let userPreference
 
-        if (confirm("Do you want to download this background?") == true) {
-			userPreference = "Image downloaded!"
-		} else {
-			userPreference = "Download Canceled!"
-		}
-        alert(userPreference)
-    }
-</script>
+    {% if isDownload == "True" %}
+        <script> 
+            alert("hi")
+            let userPreference
+
+            if (confirm("Do you want to download this background?") == true) {
+                userPreference = "Image downloaded!"
+            } else {
+                userPreference = "Download Canceled!"
+            }
+            alert(userPreference)
+        </script>
+    {% endif %}
+
+{% endblock %}

@@ -29,6 +29,11 @@ h3{
     width: 100%;
     height: auto;
 }
+.options{
+  text-align: start;
+  display: flex;
+  align-items: flex-start;
+}
 .spotify{ /*widget*/
   position: absolute;
   right: 20px;
@@ -160,7 +165,7 @@ Start of analog clock below*/
     background-size: cover;
     position:absolute;
     bottom:275px;
-    text-align:center
+    text-align:center;
   }
 
   /* Widget Bank */
