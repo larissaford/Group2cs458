@@ -26,9 +26,5 @@
         </button>
       </div>
     </div>
-    <form method="POST" action="{% url 'logout' %}">
-      {% csrf_token %}
-      <input type="submit" value="Logout"/>
-    </form>
   </nav>
 {%endblock%}
