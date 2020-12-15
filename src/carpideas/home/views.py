@@ -5,6 +5,7 @@ from accounts.models import CustomUser
 from .models import Quote
 from carpideas.imageGetter import ImageGetter
 from django.views.static import serve
+from wsgiref.util import FileWrapper
 
 from requests.auth import HTTPBasicAuth
 
@@ -27,6 +28,7 @@ from pathlib import Path
 from django.urls import reverse
 from py._path.local import LocalPath
 from ftplib import FTP
+import mimetypes
 
 #used for making this code work for different operating systems.
 class Path(pathlib.Path):
@@ -99,7 +101,7 @@ def delete_session(request):
 # downloads the currently viewed image stored in the session
 def download_view(request):
 
-	path_to_download_folder = str(os.path.join(Path.home(), "Downloads", "image.png"))
+	path_to_download_folder = os.path.join(Path.home(), "Downloads", "image.png")
 	
 	if request.session.get('currentImage'):
 		print("Current image has been set. Starting download to: ", path_to_download_folder)
@@ -123,7 +125,7 @@ def download_view(request):
 		# path_to_download_folder = str(os.path.join(Path.home(), "Downloads", "image.png"))
 
 		# #print(path_to_download_folder)
-		# image = io.imread(image_file)
+		#image = io.imread(image_file)
 		# #image = image_url
 		# status = cv2.imwrite(path_to_download_folder, cv2.cvtColor(image, cv2.COLOR_BGR2RGB))
 		# print("Image written to file-system at ",path_to_download_folder,": ", status)	
@@ -134,7 +136,15 @@ def download_view(request):
 	if not request.user.is_authenticated:
 		return redirect("login")
 	else:
-		return serve(request, os.path.basename(path_to_download_folder), os.path.dirname(image_file))
+		#return serve(request, os.path.basename(path_to_download_folder), os.path.dirname(image_file))
+		#return HttpResponse(image, headers={'Content-type: image/jpeg', 'Content-Disposition: attachment;filename='+image_file})
+		content_type = mimetypes.guess_type(image_file)[0]
+		wrapper = FileWrapper(open(image_file,"rb"))
+		response = HttpResponse(wrapper, content_type='image/jpeg')
+		#response['Content-Length']=os.path.getsize(image_file)
+		response['Content-Disposition']='attachment; filename=image.png'
+		return response
+		
 
 #called by pixelation button for pixelizing the current image
 def pixelate_view(request):
@@ -263,8 +273,9 @@ def getImage(request):
 	else:
 		print('setting new image')
 		#get image
-		image = ImageGetter('puppies').fetchImage()
-		
+		image = ImageGetter('0').fetchImage()
+	
+		print('writing image to files')
 		#write image to file
 		image = io.imread(image) #from the scikit-image package (the import statement skimage), makes the url into an image png file
 		status = cv2.imwrite(str(pathlib.Path(os.getcwd(),"home","image.png")), cv2.cvtColor(image, cv2.COLOR_BGR2RGB)) #writes the image png file into the file system as image.png
