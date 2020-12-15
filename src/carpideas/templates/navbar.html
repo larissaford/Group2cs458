@@ -1,7 +1,7 @@
 {% block content %}
 
 <!--uses bootstrap to create top navbar-->
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+<nav style="z-index: 30" class="navbar navbar-expand-lg navbar-dark bg-dark">
     <a class="navbar-brand" href="http://127.0.0.1:8000/">CarpIdeas</a>
     <div>
         <form class="form-inline">
@@ -10,22 +10,6 @@
               <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
               <button class="btn btn-outline-success my-2 my-sm-0" type="submit" name = search>Search</button>
             </form>
-        </form>
-        <form method="POST" action="{% url 'login' %}">
-          {% csrf_token %}
-      
-          {% for field in form %}
-              <div>
-                  {{ field.label }}
-                  {{ field }}
-              </div>
-            {% endfor %}
-          {% if form.errors %}
-          <div>
-            <p>Your username and/or password was incorrect.</p>
-          </div>
-          {% endif %}
-          <input type="submit" value="Login"/>
         </form>
     </div>
     <!--collapsable navbar when compressed by window-->
@@ -37,45 +21,9 @@
         <!--navbar links to be implemented-->
         <a class="nav-item nav-link" href="#">About</a>
         <a class="nav-item nav-link" href="#">Contact Us</a>
-        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+        <button type="button" class="btn btn-primary" onclick="activateBank()">
             Customize
         </button>
-        <!--modal popup for costumize button-->
-          <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog" role="document">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h5 class="modal-title" id="exampleModalLabel">Customize Dashboard</h5>
-                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                  </button>
-                </div>
-                <div class="modal-body">
-                  Toggle Widgets and other functions here?
-                    <ul>
-                        <!--switch boxes within modal popup-->
-                        <li>Spotify
-                            <label class="switch">
-                            <input type="checkbox">
-                            <span class="slider round"></span>
-                            </label>
-                        </li>
-                        <li> Clock
-                            <label class="switch">
-                            <input type="checkbox">
-                            <span class="slider round"></span>
-                            </label>
-                        </li>
-                    </ul>
-                </div>
-                <div class="modal-footer">
-                  <!--close and save changes button-->
-                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                  <button type="button" class="btn btn-primary">Save changes</button>
-                </div>
-              </div>
-            </div>
-          </div>
       </div>
     </div>
   </nav>
