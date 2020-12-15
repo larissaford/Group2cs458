@@ -12,5 +12,5 @@
     {% include 'widget_bank.html' %}
     <button onclick="activateBank()">Widget Bank</button>
     {% include 'widgets/quote_widget.html' %}
-    {% include 'options.html' %}
+    {% include 'options.html' with isPixelate=isPixelate %}
 {% endblock %}

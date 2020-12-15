@@ -120,15 +120,6 @@ def download_view(request):
 			'quote': posts.quote,
 			'isDownload': True
 		}
-		
-		# print('Beginning file download with urllib2...')
-		# path_to_download_folder = str(os.path.join(Path.home(), "Downloads", "image.png"))
-
-		# #print(path_to_download_folder)
-		#image = io.imread(image_file)
-		# #image = image_url
-		# status = cv2.imwrite(path_to_download_folder, cv2.cvtColor(image, cv2.COLOR_BGR2RGB))
-		# print("Image written to file-system at ",path_to_download_folder,": ", status)	
 
 	else:
 		print ("Current image has not been set. Try reloading the home page")
@@ -136,12 +127,8 @@ def download_view(request):
 	if not request.user.is_authenticated:
 		return redirect("login")
 	else:
-		#return serve(request, os.path.basename(path_to_download_folder), os.path.dirname(image_file))
-		#return HttpResponse(image, headers={'Content-type: image/jpeg', 'Content-Disposition: attachment;filename='+image_file})
-		content_type = mimetypes.guess_type(image_file)[0]
 		wrapper = FileWrapper(open(image_file,"rb"))
 		response = HttpResponse(wrapper, content_type='image/jpeg')
-		#response['Content-Length']=os.path.getsize(image_file)
 		response['Content-Disposition']='attachment; filename=image.png'
 		return response
 		
@@ -150,6 +137,9 @@ def download_view(request):
 def pixelate_view(request):
 	#To-Do: bitsize should be received from the user
 	bitsize = "64"
+
+	randNum = 0 # For testing purposes
+	posts = Quote.objects.get(quoteID=randNum)
 
 	if request.session.get('pixelized'):
 		pixelatedImage = request.session.get('pixelized')
@@ -180,13 +170,18 @@ def pixelate_view(request):
 	#pixelatedImage = old_pixelate_image(image._image)
 
 	my_context = {
-		'pixelated': pixelatedImage
+		'image': pixelatedImage,
+		'quote': posts.quote,
+		'isPixelate': True
 	}
 	# Check if user is anonymous user
 	if not request.user.is_authenticated:
 		return redirect("login")
 	else:
-		return render(request, "pixelated.html", my_context)
+		return render(request, "home.html", my_context)
+
+def unpixelate_view(request):
+	return redirect(home_view)
 
 def home_view(request):
 
@@ -198,8 +193,6 @@ def home_view(request):
 	randNum = 0 # For testing purposes
 	posts = Quote.objects.get(quoteID=randNum)
 
-	download_request = False
-
 	#TO-DO: get this from the user
 	bitsize = "64"
 	
@@ -207,7 +200,7 @@ def home_view(request):
 	my_context = {
 		'image': image_url,
 		'quote': posts.quote,
-		'isDownload': False
+		'isPixelate': False
 	}
 	# Check if user is anonymous user
 	if not request.user.is_authenticated:
