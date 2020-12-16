@@ -32,7 +32,6 @@ $(addWidgetsToList())
  */
 function addWidgetsToList() {
     // Reference to List inside the Bank
-    var widgetList = $("#widgetList")
 
     for(var i = 0; i < widgets.length; i++) {
         var widgetObject = widgets[i]; // get widget
@@ -42,7 +41,7 @@ function addWidgetsToList() {
 
         widget.hide() // hide by default
         icon.show() // show icon by default
-        widgetList.append(widgetContainer)
+        bankContainer.append(widgetContainer)
     }
 }
 
@@ -82,8 +81,7 @@ function allowDrop(event) {
 document.addEventListener("dragenter", function dragenter(event) {
     var location = ""
     var dragOverId = event.target.id
-    console.log(dragOverId)
-    console.log(event.target)
+
     // location of the main area of page
     if(dragOverId == "image") {
         location = "body"
@@ -108,7 +106,6 @@ document.addEventListener("dragover", function(event) {
     event.preventDefault()
     dragX = event.pageX
     dragY = event.pageY
-    console.log("(" + dragX + "," + dragY + ")")
 })
 
 
@@ -161,8 +158,10 @@ function activateWidget(widgetContainer) {
         // check if it is a widgetContainer
         if (widgetContainer.hasClass("widgetContainer")) {
             // Get pieces of widget
-            var widget = widgetContainer.find(".widget");
+            var widget = widgetContainer.find(".widget")
             var icon = widgetContainer.find(".icon")
+            var scripts = widgetContainer.find("script")
+            console.log(scripts)
             // undefined check for pieces
             if (widget && icon) {
                 $("body").append(widgetContainer)
