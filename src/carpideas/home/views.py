@@ -24,10 +24,10 @@ import base64, urllib
 import numpy as np
 import matplotlib.pyplot as plt
 import pathlib
-import pydantic.json
+#import pydantic.json
 from pathlib import Path
 from django.urls import reverse
-from py._path.local import LocalPath
+#from py._path.local import LocalPath
 from ftplib import FTP
 import mimetypes
 
@@ -143,12 +143,9 @@ def download_view(request):
 def pixelate_view(request):
 	#To-Do: bitsize should be received from the user
 	bitsize = "64"
-<<<<<<< HEAD
-=======
 
 	randNum = 0 # For testing purposes
 	posts = Quote.objects.get(quoteID=randNum)
->>>>>>> 525f2af00d7d81fc62f3f1ec173fb87eccdf5d04
 
 	if request.session.get('pixelized'):
 		pixelatedImage = request.session.get('pixelized')
