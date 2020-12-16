@@ -12,9 +12,9 @@
            
         </a>
       </div>
-      
+
       <div class="collapse navbar-collapse" id="myNavbar">
-        <div class = "options">
+        <div class ="options">
         <ul class="nav navbar-nav">
             <li>
                 <!--Like Image button-->
@@ -29,6 +29,7 @@
                 </div>
             </li>
             <li>
+                <!--Download button-->
                 <a class="btn btn-secondary" href="/download">Download Image</a> 
             </li>
             <li>
@@ -36,7 +37,13 @@
                 <button name = "skip" class="btn btn-secondary" type="submit"  onClick="refreshPage()">Skip Background</button>
             </li>
             <li>
+              <!--Pixelate button-->
+              {% if not isPixelate %}
               <a class="btn btn-secondary" href="/pixelate">Pixelate Image</a>
+              {% else %}
+              <a class="btn btn-secondary" href="/unpixelate">Revert Image</a>
+              {% endif %}
+
             </li>
               <li>
               <!-- Logout Image button-->

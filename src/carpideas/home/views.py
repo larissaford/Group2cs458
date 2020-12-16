@@ -4,8 +4,11 @@ from django.core import serializers
 from accounts.models import CustomUser
 from .models import Quote
 from carpideas.imageGetter import ImageGetter
-
+from django.views.static import serve
+from wsgiref.util import FileWrapper
+from Image.models import SearchQuery, ImageURL
 from requests.auth import HTTPBasicAuth
+from Image.forms import searchForm
 
 import shutil
 from PIL import Image
@@ -26,6 +29,12 @@ from pathlib import Path
 from django.urls import reverse
 from py._path.local import LocalPath
 from ftplib import FTP
+import mimetypes
+
+
+
+
+
 
 #used for making this code work for different operating systems.
 class Path(pathlib.Path):
@@ -98,7 +107,7 @@ def delete_session(request):
 # downloads the currently viewed image stored in the session
 def download_view(request):
 
-	path_to_download_folder = str(os.path.join(Path.home(), "Downloads", "image.png"))
+	path_to_download_folder = os.path.join(Path.home(), "Downloads", "image.png")
 	
 	if request.session.get('currentImage'):
 		print("Current image has been set. Starting download to: ", path_to_download_folder)
@@ -112,47 +121,51 @@ def download_view(request):
 		randNum = 0 # For testing purposes
 		posts = Quote.objects.get(quoteID=randNum)
 
-		#telling the html to tell the user that something is being downloaded
-		download_request = True
-
 		my_context = {
 			'image': image_url,
 			'quote': posts.quote,
-			'isDownload': download_request
+			'isDownload': True
 		}
-		
-		print('Beginning file download with urllib2...')
-		try:
-			image = io.imread(image_file)
-			status = cv2.imwrite(path_to_download_folder, cv2.cvtColor(image, cv2.COLOR_BGR2RGB))
-			print("Image written to file-system at ",path_to_download_folder,": ", status)	
-		except:
-			print("image not found in file")
+
 	else:
 		print ("Current image has not been set. Try reloading the home page")
 	
 	if not request.user.is_authenticated:
 		return redirect("login")
 	else:
-		return render(request, "home.html", my_context)
+		wrapper = FileWrapper(open(image_file,"rb"))
+		response = HttpResponse(wrapper, content_type='image/jpeg')
+		response['Content-Disposition']='attachment; filename=image.png'
+		return response
+		
 
 #called by pixelation button for pixelizing the current image
 def pixelate_view(request):
 	#To-Do: bitsize should be received from the user
 	bitsize = "64"
+<<<<<<< HEAD
+=======
+
+	randNum = 0 # For testing purposes
+	posts = Quote.objects.get(quoteID=randNum)
+>>>>>>> 525f2af00d7d81fc62f3f1ec173fb87eccdf5d04
 
 	if request.session.get('pixelized'):
 		pixelatedImage = request.session.get('pixelized')
 		print('pixelized image was stored in session')
 		print()
+		pixelatedImageFile = str(pathlib.Path(os.getcwd(),"home","pixelated.png"))
+		request.session['currentImage'] = pixelatedImageFile
 	else:
 		if request.session.get('image'):
 			print("image found in session for pixelation. pixelation starting now")
 			image_url = request.session.get('image')
 			
 			pixelatedImage = pixelate_image(image_url, bitsize)
+			pixelatedImageFile = str(pathlib.Path(os.getcwd(),"home","pixelated.png"))
 			#comment this out for testing and uncomment below if pixelation has already completed
 			request.session['pixelized'] = pixelatedImage
+			request.session['currentImage'] = pixelatedImageFile
 			#uncomment this for testing
 			#request.session['pixelized'] = getImageURI(pathlib.Path(os.getcwd(),"home","pixelated.png"))	
 		else:
@@ -170,13 +183,18 @@ def pixelate_view(request):
 	#pixelatedImage = old_pixelate_image(image._image)
 
 	my_context = {
-		'pixelated': pixelatedImage
+		'image': pixelatedImage,
+		'quote': posts.quote,
+		'isPixelate': True
 	}
 	# Check if user is anonymous user
 	if not request.user.is_authenticated:
 		return redirect("login")
 	else:
-		return render(request, "pixelated.html", my_context)
+		return render(request, "home.html", my_context)
+
+def unpixelate_view(request):
+	return redirect(home_view)
 
 def home_view(request):
 
@@ -188,8 +206,6 @@ def home_view(request):
 	randNum = 0 # For testing purposes
 	posts = Quote.objects.get(quoteID=randNum)
 
-	download_request = False
-
 	#TO-DO: get this from the user
 	bitsize = "64"
 	
@@ -197,7 +213,7 @@ def home_view(request):
 	my_context = {
 		'image': image_url,
 		'quote': posts.quote,
-		'isDownload': download_request
+		'isPixelate': False
 	}
 	# Check if user is anonymous user
 	if not request.user.is_authenticated:
@@ -263,8 +279,9 @@ def getImage(request):
 	else:
 		print('setting new image')
 		#get image
-		image = ImageGetter('puppies').fetchImage()
-		
+		image = ImageGetter('0').fetchImage()
+	
+		print('writing image to files')
 		#write image to file
 		image = io.imread(image) #from the scikit-image package (the import statement skimage), makes the url into an image png file
 		status = cv2.imwrite(str(pathlib.Path(os.getcwd(),"home","image.png")), cv2.cvtColor(image, cv2.COLOR_BGR2RGB)) #writes the image png file into the file system as image.png
@@ -289,4 +306,57 @@ def getImageURI(filename):
 	return prefix + base64.b64encode(img).decode('utf-8')
 
 def search(request):
-	print("Hello world ")
+
+	search_form = searchForm()
+	if request.method =="POST":
+		print("check1")
+		search_form = searchForm(request.POST)
+
+
+		if search_form.is_valid():
+			print("Hello world ")
+			print("found")
+			query = search_form.cleaned_data.get('search')
+			print(query)
+
+			print('setting new image')
+		#get image
+
+			qrw =""
+
+			qrw.join(query)
+
+			image = ImageGetter(qrw).fetchImage()
+	
+			print('writing image to files')
+		#write image to file
+			image = io.imread(image) #from the scikit-image package (the import statement skimage), makes the url into an image png file
+			status = cv2.imwrite(str(pathlib.Path(os.getcwd(),"home","image.png")), cv2.cvtColor(image, cv2.COLOR_BGR2RGB)) #writes the image png file into the file system as image.png
+			print("Image written to file-system: ", status)
+
+		#set image in session
+			image = getImageURI(pathlib.Path(os.getcwd(),"home", "image.png"))
+			request.session['image'] = image
+
+			#set current image for downloading the current image
+			request.session['currentImage'] = str(pathlib.Path(os.getcwd(),"home", "image.png"))
+				
+			randNum = 0 # For testing purposes
+			posts = Quote.objects.get(quoteID=randNum)
+
+			#TO-DO: get this from the user
+			bitsize = "64"
+			
+			#contains key-value pairs for inputting variables into HTML
+			my_context = {
+				'image': image,
+				'quote': posts.quote,
+				'isPixelate': False
+			}
+			# Check if user is anonymous user
+			if not request.user.is_authenticated:
+				return redirect("login")
+			else:
+				return render(request, "home.html", my_context)
+		
+			

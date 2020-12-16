@@ -1,9 +1,27 @@
 //sets the roation of the tick marks on the clock face
-let numberElements = document.querySelectorAll(".clock__numbers > div");
-let radius = 360;
-let pegs = numberElements.length;
-let pegsI = radius / pegs;
-let i = 0;
+var numberElements = document.querySelectorAll(".clock__numbers > div");
+var radius = 360;
+var pegs = numberElements.length;
+var pegsI = radius / pegs;
+var i = 0;
+
+// Hands of the clock
+var hourHand;
+var minuteHand;
+var secondHand;
+
+/**
+ * jQuery function to get hands of clock when document is ready.
+ * Starts interval for running function to update hand positions.
+ */
+$(function () {
+    // Using vanilla JS to prevent needing to parse jQuery object
+    hourHand = document.querySelector('.hour');
+    minuteHand = document.querySelector('.minute');
+    secondHand = document.querySelector('.second');
+    // for every 1000 milliseconds(ie, 1 second) interval, activate the rotate() function.
+    setInterval(rotate, 1000);
+})
 
 for( let number of numberElements ){
     if( i > 0 ){
@@ -12,15 +30,9 @@ for( let number of numberElements ){
     i++;
 }
 
-
-//hour hand
-let hourHand = document.querySelector('.hour');
-// minute hand 
-let minuteHand = document.querySelector('.minute');
-// second hand
-let secondHand = document.querySelector('.second');
-
-// function that rotates the hands
+/**
+ * Function that updates the hands of the clock
+ */
 function rotate() {
   // get the current Date object from which we can obtain the current hour, minute and second
   const currentDate = new Date();
@@ -47,5 +59,4 @@ function rotate() {
   hourHand.style.transform = `rotate(${hoursRotate}deg)`;
 }
 
-// for every 1000 milliseconds(ie, 1 second) interval, activate the rotate() function.
-setInterval(rotate, 1000);
+

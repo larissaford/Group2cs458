@@ -1,0 +1,15 @@
+{% block content %}
+
+<div>
+  
+    
+        <!--search bar in navbar-->
+        <form class="form-inline" method="POST" action="{% url 'search' %}">
+          {% csrf_token %}
+          <input class="form-control mr-sm-2" type="search" placeholder="search" aria-label="Search" name = search>
+          <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Seach</button>
+        </form>
+
+</div>
+
+{%endblock%}

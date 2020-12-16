@@ -22,7 +22,8 @@ from accounts.tokens import account_activation_token
 
 from django.contrib.auth import views as auth_views
 from accounts.views import activate_view, password_reset_view, register_view
-from home.views import home_view, pixelate_view, download_view, cookie_session, cookie_delete, create_session, access_session, delete_session
+from home.views import home_view, pixelate_view, download_view, cookie_session, cookie_delete, create_session, access_session, delete_session,unpixelate_view,search
+#from Image.views import search
 
 
 urlpatterns = [
@@ -55,12 +56,14 @@ urlpatterns = [
 
     path('', home_view, name="home"),
     path('pixelate/', pixelate_view, name="pixelate"),
+    path('unpixelate/', unpixelate_view, name="unpixelate"),
     path('download/', download_view, name="download"),
     path('testcookie/', cookie_session),
     path('deletecookie/', cookie_delete),
     path('create/', create_session),
     path('access', access_session),
-    path('delete/', delete_session)
+    path('delete/', delete_session),
+    path('search/',search, name="search")
 
     #testing
     #path('', include('image.urls')),
