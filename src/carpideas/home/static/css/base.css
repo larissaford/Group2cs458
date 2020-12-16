@@ -195,8 +195,8 @@ h3{
   border-color: yellow;
 }
 
-
-.widgetBank > .widgetContainer {
+.bank li {
+  padding: 8px 8px 8px 32px;
   text-decoration: none;
   font-size: 25px;
   color: black;
@@ -204,45 +204,34 @@ h3{
   transition: 0.3s;
 }
 
-/*.widgetBank {*/
-/*  position: relative;*/
-/*}*/
-
-#widgetBank > .icon {
-  display: block;
-  vertical-align: center;
+.bank li:hover {
+  color: red;
 }
 
-/*#widgetBank img {*/
-/*  display: block;*/
-/*}*/
-
-body > .widgetContainer {
-  position: relative;
+.widgetBank {
+  position: absolute;
 }
 
 /* Widget Compenents */
-/*.widgetContainer {*/
-/*  position: absolute;*/
-/*}*/
+.widgetContainer {
+  padding-bottom: 1em;
+  position: absolute;
+}
 
 .widget {
   position: absolute;
 }
 
 .icon {
-  display: block;
+
 }
 
 .icon img {
-  position: relative;
-
   max-width: 100px;
   max-height: 100px;
-  margin: 1em;
 }
 
-.widgetContainer > iframe {
+iframe {
   position: relative;
 }
 /* Analog Clock Widget Classes */
