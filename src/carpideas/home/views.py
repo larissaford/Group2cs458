@@ -6,8 +6,9 @@ from .models import Quote
 from carpideas.imageGetter import ImageGetter
 from django.views.static import serve
 from wsgiref.util import FileWrapper
-
+from Image.models import SearchQuery, ImageURL
 from requests.auth import HTTPBasicAuth
+from Image.forms import searchForm
 
 import shutil
 from PIL import Image
@@ -29,6 +30,11 @@ from django.urls import reverse
 from py._path.local import LocalPath
 from ftplib import FTP
 import mimetypes
+
+
+
+
+
 
 #used for making this code work for different operating systems.
 class Path(pathlib.Path):
@@ -297,4 +303,57 @@ def getImageURI(filename):
 	return prefix + base64.b64encode(img).decode('utf-8')
 
 def search(request):
-	print("Hello world ")
+
+	search_form = searchForm()
+	if request.method =="POST":
+		print("check1")
+		search_form = searchForm(request.POST)
+
+
+		if search_form.is_valid():
+			print("Hello world ")
+			print("found")
+			query = search_form.cleaned_data.get('search')
+			print(query)
+
+			print('setting new image')
+		#get image
+
+			qrw =""
+
+			qrw.join(query)
+
+			image = ImageGetter(qrw).fetchImage()
+	
+			print('writing image to files')
+		#write image to file
+			image = io.imread(image) #from the scikit-image package (the import statement skimage), makes the url into an image png file
+			status = cv2.imwrite(str(pathlib.Path(os.getcwd(),"home","image.png")), cv2.cvtColor(image, cv2.COLOR_BGR2RGB)) #writes the image png file into the file system as image.png
+			print("Image written to file-system: ", status)
+
+		#set image in session
+			image = getImageURI(pathlib.Path(os.getcwd(),"home", "image.png"))
+			request.session['image'] = image
+
+			#set current image for downloading the current image
+			request.session['currentImage'] = str(pathlib.Path(os.getcwd(),"home", "image.png"))
+				
+			randNum = 0 # For testing purposes
+			posts = Quote.objects.get(quoteID=randNum)
+
+			#TO-DO: get this from the user
+			bitsize = "64"
+			
+			#contains key-value pairs for inputting variables into HTML
+			my_context = {
+				'image': image,
+				'quote': posts.quote,
+				'isPixelate': False
+			}
+			# Check if user is anonymous user
+			if not request.user.is_authenticated:
+				return redirect("login")
+			else:
+				return render(request, "home.html", my_context)
+		
+			
