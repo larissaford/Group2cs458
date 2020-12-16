@@ -140,12 +140,6 @@ def download_view(request):
 def pixelate_view(request):
 	#To-Do: bitsize should be received from the user
 	bitsize = "64"
-<<<<<<< HEAD
-	 
-	image_url = ImageGetter("shore").fetchImage()
-	pixelatedImage = pixelate_image(image_url, bitsize)
-=======
->>>>>>> bbbff4c1f76d58980e54c0027468121a2ae92828
 
 	if request.session.get('pixelized'):
 		pixelatedImage = request.session.get('pixelized')
