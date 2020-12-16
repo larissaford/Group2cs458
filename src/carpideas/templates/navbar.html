@@ -3,19 +3,11 @@
 <!--uses bootstrap to create top navbar-->
 <nav style="z-index: 30" class="navbar navbar-expand-lg navbar-dark bg-dark">
     <a class="navbar-brand" href="http://127.0.0.1:8000/">CarpIdeas</a>
-    <div>
-        <form class="form-inline">
-            <!--search bar in navbar-->
-            <form method="POST">
-              <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-              <button class="btn btn-outline-success my-2 my-sm-0" type="submit" name = search>Search</button>
-            </form>
-        </form>
-    </div>
-    <!--collapsable navbar when compressed by window-->
+    {% include 'search.html'%}
+    <!--collapsable navbar when compressed by window
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
-    </button>
+    </button>-->
     <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
       <div class="navbar-nav">
         <!--navbar links to be implemented-->
