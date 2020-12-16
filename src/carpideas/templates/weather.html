@@ -1,0 +1,29 @@
+{% load static %}
+
+
+
+  <div class="widgetContainer app-wrap" draggable="true" ondragend="drop(event)" >
+    <div class="widget">
+    <header>
+      <input type="text" autocomplete="off" class="search-box" placeholder="Search for a city..." />
+    </header>
+    <main>
+      <section class="location">
+        <div class="city">Edina, US</div>
+        <div class="date">Tuesday 15 December 2020</div>
+      </section>
+      <div class="current">
+        <div class="temp">25<span>°F</span></div>
+        <div class="weather">Sunny</div>
+        <div class="hi-low">16°F / 26°F</div>
+      </div>
+    </main>
+    </div>
+    <div class="icon">
+                <img src="{% static 'icons/weather_icon.png' %}"/>
+        </div>
+  </div>
+  <script src="{% static 'javascript/weather.js' %}"></script>
+   
+
+
